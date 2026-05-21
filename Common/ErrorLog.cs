@@ -34,5 +34,46 @@ namespace Common
                 //throw Ex;
             }
         }
+
+        public static void WriteLogFile(Exception ex)
+        {
+            try
+            {
+                string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ErrorLogs");
+
+                // Create folder if not exists
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                string filePath = Path.Combine(
+                    folderPath,
+                    "ErrorLog_" + DateTime.Now.ToString("yyyyMMdd") + ".txt"
+                );
+
+                using (StreamWriter writer = new StreamWriter(filePath, true))
+                {
+                    writer.WriteLine("--------------------------------------------------");
+                    writer.WriteLine("Date Time : " + DateTime.Now);
+                    writer.WriteLine("Message   : " + ex.Message);
+                    writer.WriteLine("Source    : " + ex.Source);
+                    writer.WriteLine("StackTrace: " + ex.StackTrace);
+
+                    if (ex.InnerException != null)
+                    {
+                        writer.WriteLine("InnerException : " + ex.InnerException.Message);
+                    }
+
+                    writer.WriteLine("--------------------------------------------------");
+                    writer.WriteLine();
+                }
+            }
+            catch
+            {
+                // Avoid throwing exception from logger
+            }
+        }
+
     }
 }

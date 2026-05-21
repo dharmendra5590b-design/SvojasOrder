@@ -24,15 +24,36 @@ namespace Services
             try
             {
                 UserEntityDE userEntityDE = new UserEntityDE();
-                DataTable dtTable= await _loginRepository.ValidateUser(pobjLoginRequestDE);
-                foreach (DataRow drrow in dtTable.Rows)
+                responseDE = await _loginRepository.ValidateUser(pobjLoginRequestDE);
+                if (responseDE.StatusCode==1)
                 {
-                    userEntityDE.User_Name = Convert.ToString(drrow["User_Name"]);
-                    userEntityDE.Entity_Name = Convert.ToString(drrow["Entity_Name"]);
-                    userEntityDE.Entity_ID = Convert.ToInt32(drrow["Entity_ID"]);
-                    userEntityDE.User_Type = Convert.ToString(drrow["User_Type"]);
-                    userEntityDE.User_ID = Convert.ToInt32(drrow["User_ID"]);
+                    foreach (DataRow drrow in ((DataTable)responseDE.data).Rows)
+                    {
+                        userEntityDE.User_Name = Convert.ToString(drrow["User_Name"]);
+                        userEntityDE.Entity_Name = Convert.ToString(drrow["Entity_Name"]);
+                        userEntityDE.Entity_ID = Convert.ToInt32(drrow["Entity_ID"]);
+                        userEntityDE.User_Type = Convert.ToString(drrow["User_Type"]);
+                        userEntityDE.User_ID = Convert.ToInt32(drrow["User_ID"]);
+                    }
                 }
+                responseDE.data = userEntityDE;
+                return responseDE;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> ChangePassword(ChangePasswordDE pobjChangePasswordDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                UserEntityDE userEntityDE = new UserEntityDE();
+                responseDE = await _loginRepository.ChangePassword(pobjChangePasswordDE);
+                
                 return responseDE;
             }
             catch (Exception)

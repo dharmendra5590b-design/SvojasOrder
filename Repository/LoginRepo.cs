@@ -1,4 +1,5 @@
-﻿using Domain.Login;
+﻿using Domain;
+using Domain.Login;
 using Microsoft.Data.SqlClient;
 using Repository.DBConnection;
 using Repository.Interface;
@@ -18,16 +19,34 @@ namespace Repository
         {
             IsqlConnection = sqlConnection;
         }
-        public async Task<DataTable> ValidateUser(LoginRequestDE loginRequestDE)
+        public async Task<ResponseDE> ValidateUser(LoginRequestDE loginRequestDE)
         {
+            ResponseDE responseDE=new ResponseDE();
             try
             {
 
                 SqlParameter[] ObjSqlParameter = new SqlParameter[]{
-                    new SqlParameter("@UserName",DbType.String){Value=loginRequestDE.UserName},
-                     new SqlParameter("@Password",DbType.String){Value=loginRequestDE.Password}
+                    new SqlParameter("@UserName",SqlDbType.VarChar){Value=loginRequestDE.UserName},
+                     new SqlParameter("@Password",SqlDbType.VarChar){Value=loginRequestDE.Password},
+                         // Output parameter - Message
+                    new SqlParameter("@Msg", SqlDbType.VarChar, 500)
+                    {
+                        Direction = ParameterDirection.Output
+                    },
+
+                    // Output parameter - Status
+                    new SqlParameter("@Status", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    }
+
                     };
-                return await IsqlConnection.FunDataTable("usp_UserLogin", CommandType.StoredProcedure, ObjSqlParameter);
+                DataTable dataTable= await IsqlConnection.FunDataTable("usp_UserLogin", CommandType.StoredProcedure, ObjSqlParameter);
+                responseDE.Message = ObjSqlParameter[2].Value?.ToString();
+                responseDE.StatusCode= ObjSqlParameter[3].Value != DBNull.Value ? Convert.ToInt32(ObjSqlParameter[3].Value): 0;
+                responseDE.data = dataTable;
+                return responseDE;
+
 
             }
             catch (Exception)
@@ -37,18 +56,31 @@ namespace Repository
             }
         }
 
-        public async Task<DataTable> ChangePassword(ChangePasswordDE changePassword)
+        public async Task<ResponseDE> ChangePassword(ChangePasswordDE changePassword)
         {
+            ResponseDE responseDE = new ResponseDE();
             try
             {
 
                 SqlParameter[] ObjSqlParameter = new SqlParameter[]{
                     new SqlParameter("@UserID",DbType.String){Value=changePassword.UserID},
                      new SqlParameter("@Old_Password",DbType.String){Value=changePassword.Password},
-                     new SqlParameter("@New_Password",DbType.String){Value=changePassword.NewPassword}
-                    };
-                return await IsqlConnection.FunDataTable("usp_UPDATE_User_Password", CommandType.StoredProcedure, ObjSqlParameter);
+                     new SqlParameter("@New_Password",DbType.String){Value=changePassword.NewPassword},
+                     new SqlParameter("@Msg", SqlDbType.VarChar, 500)
+                    {
+                        Direction = ParameterDirection.Output
+                    },
 
+                    // Output parameter - Status
+                    new SqlParameter("@Status", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    }
+                    };
+                 await IsqlConnection.FunDataTable("usp_UPDATE_User_Password", CommandType.StoredProcedure, ObjSqlParameter);
+                responseDE.Message = ObjSqlParameter[2].Value?.ToString();
+                responseDE.StatusCode = ObjSqlParameter[3].Value != DBNull.Value ? Convert.ToInt32(ObjSqlParameter[3].Value) : 0;
+                return responseDE;
             }
             catch (Exception)
             {

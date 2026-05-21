@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using SvojasOrder.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ builder.Services.AddControllers();
 builder.Services.RegisterApiServices(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddJWTTokenServices(builder.Configuration);
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

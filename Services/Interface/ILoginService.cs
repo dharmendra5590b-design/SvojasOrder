@@ -11,5 +11,6 @@ namespace Services.Interface
     public interface ILoginService
     {
         Task<ResponseDE> ValidateUser(LoginRequestDE pobjLoginRequestDE);
+        Task<ResponseDE> ChangePassword(ChangePasswordDE pobjChangePasswordDE);
     }
 }

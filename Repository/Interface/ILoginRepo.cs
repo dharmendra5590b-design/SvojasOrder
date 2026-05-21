@@ -1,4 +1,5 @@
-﻿using Domain.Login;
+﻿using Domain;
+using Domain.Login;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +11,7 @@ namespace Repository.Interface
 {
     public interface ILoginRepo
     {
-        Task<DataTable> ValidateUser(LoginRequestDE loginRequestDE);
-        Task<DataTable> ChangePassword(ChangePasswordDE changePassword);
+        Task<ResponseDE> ValidateUser(LoginRequestDE loginRequestDE);
+        Task<ResponseDE> ChangePassword(ChangePasswordDE changePassword);
     }
 }

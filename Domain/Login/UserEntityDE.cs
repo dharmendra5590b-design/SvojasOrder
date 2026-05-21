@@ -18,5 +18,7 @@ namespace Domain.Login
 
         public string Entity_Name { get; set; }
 
+        public string token { get; set; }
+
     }
 }
