@@ -18,6 +18,8 @@ namespace SvojasOrder.Extensions
             Services.AddScoped<ISqlConnection, ClSSqlConnection>();
             //Repo Register
             Services.AddScoped<ILoginRepo, LoginRepo>();
+            Services.AddScoped<ICustomerRepo, CustomerRepo>();
+            Services.AddScoped<IUserRepo, UserRepo>();
             //Service Register
             Services.AddScoped<ILoginService, LoginService>();
             //Create singleton from instance
