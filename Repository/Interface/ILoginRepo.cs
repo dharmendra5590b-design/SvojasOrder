@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Interface
 {
-    public interface ILoginRepository
+    public interface ILoginRepo
     {
         Task<DataTable> ValidateUser(LoginRequestDE loginRequestDE);
         Task<DataTable> ChangePassword(ChangePasswordDE changePassword);

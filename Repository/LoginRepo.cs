@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class LoginRepository: ILoginRepository
+    public class LoginRepo: ILoginRepo
     {
         private readonly ISqlConnection IsqlConnection;
-        public LoginRepository(ISqlConnection sqlConnection)
+        public LoginRepo(ISqlConnection sqlConnection)
         {
             IsqlConnection = sqlConnection;
         }

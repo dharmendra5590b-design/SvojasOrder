@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Repository;
 using Repository.DBConnection;
 using Repository.Interface;
+using Services;
+using Services.Interface;
 using System.Repository;
 
 namespace SvojasOrder.Extensions
@@ -15,9 +17,9 @@ namespace SvojasOrder.Extensions
         {
             Services.AddScoped<ISqlConnection, ClSSqlConnection>();
             //Repo Register
-            
+            Services.AddScoped<ILoginRepo, LoginRepo>();
             //Service Register
-           
+            Services.AddScoped<ILoginService, LoginService>();
             //Create singleton from instance
 
             Services.AddHttpContextAccessor();
