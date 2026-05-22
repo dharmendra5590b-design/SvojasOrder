@@ -1,6 +1,7 @@
-﻿using Domain.Login;
-using Domain;
+﻿using Domain;
+using Domain.Login;
 using Repository.Interface;
+using Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    internal class CustomerService
+    public class CustomerService: ICustomerService
     {
         private readonly ICustomerRepo _customerRepo;
         public CustomerService(ICustomerRepo customerRepo)
@@ -28,9 +29,11 @@ namespace Services
                 {
                     dataObj.Customer_ID = Convert.ToInt32(drrow["Customer_ID"]);
                     dataObj.Customer_Name = Convert.ToString(drrow["Customer_Name"]);
-                    dataObj.Entity_ID = Convert.ToInt32(drrow["Entity_ID"]);
-                    dataObj.User_Type = Convert.ToString(drrow["User_Type"]);
-                    dataObj.User_ID = Convert.ToInt32(drrow["User_ID"]);
+                    dataObj.Customer_Code = Convert.ToString(drrow["Customer_Code"]);
+                    dataObj.Company_Name = Convert.ToString(drrow["Company_Name"]);
+                    dataObj.Mobile_Number = Convert.ToString(drrow["Mobile_Number"]);
+                    dataObj.Amount_OpeningBalance = Convert.ToDecimal(drrow["Amount_OpeningBalance"]);
+                    dataObj.Gold_OpeningBalance = Convert.ToDecimal(drrow["Gold_OpeningBalance"]);
                 }
                 responseDE.StatusCode = 1;
                 responseDE.data = dataObj;
@@ -43,13 +46,12 @@ namespace Services
             }
         }
 
-        public async Task<ResponseDE> ChangePassword(ChangePasswordDE pobjChangePasswordDE)
+        public async Task<ResponseDE> SaveCustomer(CustomerDE pobjCustomerDE)
         {
             ResponseDE responseDE = new ResponseDE();
             try
             {
-                UserEntityDE userEntityDE = new UserEntityDE();
-                responseDE = await _loginRepository.ChangePassword(pobjChangePasswordDE);
+                 responseDE = await _customerRepo.AMDCustomer(pobjCustomerDE);
 
                 return responseDE;
             }

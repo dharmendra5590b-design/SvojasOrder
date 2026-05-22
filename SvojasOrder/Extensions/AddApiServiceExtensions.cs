@@ -22,6 +22,8 @@ namespace SvojasOrder.Extensions
             Services.AddScoped<IUserRepo, UserRepo>();
             //Service Register
             Services.AddScoped<ILoginService, LoginService>();
+            Services.AddScoped<ICustomerService,CustomerService>();
+            Services.AddScoped<IUserService, UserService>();
             //Create singleton from instance
 
             Services.AddHttpContextAccessor();
