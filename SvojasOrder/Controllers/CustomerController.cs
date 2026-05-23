@@ -38,7 +38,7 @@ namespace SvojasOrder.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ResponseDE> GetCustomer(CustomerDE pobjCustomerDE)
         {
             ResponseDE responseDE = new ResponseDE();
@@ -55,6 +55,80 @@ namespace SvojasOrder.Controllers
                 return responseDE;
             }
         }
+
+        [HttpPost]
+        public async Task<ResponseDE> GetEmployee(EmployeeDE pobjEmployeeDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerService.GetEmployee(pobjEmployeeDE);
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+                return responseDE;
+            }
+        }
+
+        [HttpGet]
+        public async Task<ResponseDE> GetCustomerMapping()
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerService.GetCustomerMapping();
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> GetCustomerMappingDtl(CustomerDE pobjCustomerDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerService.GetCustomerMappingDtl(pobjCustomerDE);
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> SaveCustomerMapping(CustomerMappingDE pobjCustomerMappingDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerService.SaveCustomerMapping(pobjCustomerMappingDE);
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+                return responseDE;
+            }
+        }
+
+
     }
-    
- }
+
+}
