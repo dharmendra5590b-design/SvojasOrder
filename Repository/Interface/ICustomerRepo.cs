@@ -12,5 +12,9 @@ namespace Repository.Interface
     {
         Task<ResponseDE> AMDCustomer(CustomerDE customerDE);
         Task<DataTable> GetCustomer(CustomerDE customerDE);
+        Task<DataTable> GetEmployee(EmployeeDE employeeDE);
+        Task<ResponseDE> AMDCustomerMapping(CustomerMappingDE customerMappingDE);
+        Task<DataTable> GetCustomerMappingDtl(CustomerDE customerDE);
+        Task<DataTable> GetCustomerMapping();
     }
 }

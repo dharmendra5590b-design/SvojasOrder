@@ -63,5 +63,97 @@ namespace Services
                 throw;
             }
         }
+
+        public async Task<ResponseDE> GetEmployee(EmployeeDE employeeDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                EmployeeDE dataObj = new EmployeeDE();
+                DataTable dataTable = await _customerRepo.GetEmployee(employeeDE);
+                foreach (DataRow drrow in dataTable.Rows)
+                {
+                    dataObj.Employee_ID = Convert.ToInt32(drrow["Employee_ID"]);
+                    dataObj.Employee_Name = Convert.ToString(drrow["Employee_Name"]);
+                    dataObj.Email_ID = Convert.ToString(drrow["Email_ID"]);
+                    dataObj.Mobile_Number = Convert.ToString(drrow["Mobile_Number"]);
+                    dataObj.Designation = Convert.ToString(drrow["Designation"]);
+                }
+                responseDE.StatusCode = 1;
+                responseDE.data = dataObj;
+                return responseDE;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> GetCustomerMapping()
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                List<CustomerMappingDE> dataObj = new List<CustomerMappingDE>();
+                DataTable dataTable = await _customerRepo.GetCustomerMapping();
+                foreach (DataRow drrow in dataTable.Rows)
+                {
+                    dataObj.Add(new CustomerMappingDE { Customer_ID = Convert.ToInt32(drrow["Customer_ID"]),
+                    Customer_Name = Convert.ToString(drrow["Customer_ID"])
+                    });
+                }
+                responseDE.StatusCode = 1;
+                responseDE.data = dataObj;
+                return responseDE;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> GetCustomerMappingDtl(CustomerDE customerDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                List<CustomerMappingDE> dataObj = new List<CustomerMappingDE>();
+                DataTable dataTable = await _customerRepo.GetCustomerMappingDtl(customerDE);
+                foreach (DataRow drrow in dataTable.Rows)
+                {
+                    dataObj.Add(new CustomerMappingDE
+                    {
+                        Employee_ID = Convert.ToInt32(drrow["Employee_ID"])
+                    });
+                }
+                responseDE.StatusCode = 1;
+                responseDE.data = dataObj;
+                return responseDE;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> SaveCustomerMapping(CustomerMappingDE customerMappingDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerRepo.AMDCustomerMapping(customerMappingDE);
+
+                return responseDE;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
