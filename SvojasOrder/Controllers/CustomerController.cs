@@ -38,7 +38,7 @@ namespace SvojasOrder.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ResponseDE> GetCustomer(CustomerDE pobjCustomerDE)
         {
             ResponseDE responseDE = new ResponseDE();
