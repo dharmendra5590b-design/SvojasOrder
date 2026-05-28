@@ -38,6 +38,7 @@ namespace SvojasOrder.Controllers
             }
         }
 
+
         [HttpPost]
         public async Task<ResponseDE> GetCustomer(CustomerDE pobjCustomerDE)
         {
@@ -45,6 +46,24 @@ namespace SvojasOrder.Controllers
             try
             {
                 responseDE = await _customerService.GetCustomer(pobjCustomerDE);
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> SaveEmployee(EmployeeDE pobjEmployeeDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerService.SaveEmployee(pobjEmployeeDE);
                 return responseDE;
             }
             catch (Exception ex)

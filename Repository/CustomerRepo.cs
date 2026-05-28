@@ -130,6 +130,74 @@ namespace Repository
             }
         }
 
+        public async Task<ResponseDE> AMDEmployee(EmployeeDE employeeDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+                {
+                new SqlParameter("@Employee_ID", SqlDbType.Int)
+                {
+                    Value = employeeDE.Employee_ID
+                },
+
+                new SqlParameter("@Employee_Name", SqlDbType.VarChar)
+                {
+                    Value = employeeDE.Employee_Name
+                },
+
+                new SqlParameter("@Email_ID", SqlDbType.VarChar)
+                {
+                    Value = employeeDE.Email_ID
+                },
+
+                new SqlParameter("@Mobile_Number", SqlDbType.VarChar)
+                {
+                    Value = employeeDE.Mobile_Number
+                },
+
+                new SqlParameter("@Designation", SqlDbType.VarChar)
+                {
+                    Value = employeeDE.Designation
+                },
+                 new SqlParameter("@Mode", SqlDbType.VarChar)
+                {
+                    Value = employeeDE.Mode
+                },
+                new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+                {
+                    Direction = ParameterDirection.Output
+                },
+
+                new SqlParameter("@Status", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                }
+                };
+
+                 await _sqlConnection.FunDataTable(
+                    "usp_AMD_Employee_Mst",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+                responseDE.Message = objSqlParameter[6].Value?.ToString();
+
+                responseDE.StatusCode =
+                    objSqlParameter[7].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[7].Value)
+                    : 0;
+
+                return responseDE;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<DataTable> GetEmployee(EmployeeDE employeeDE)
         {
             DataTable dataTable = new DataTable();

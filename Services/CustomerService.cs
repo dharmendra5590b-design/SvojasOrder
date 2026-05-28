@@ -63,24 +63,40 @@ namespace Services
                 throw;
             }
         }
+        public async Task<ResponseDE> SaveEmployee(EmployeeDE pobjEmployeeDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerRepo.AMDEmployee(pobjEmployeeDE);
 
+                return responseDE;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         public async Task<ResponseDE> GetEmployee(EmployeeDE employeeDE)
         {
             ResponseDE responseDE = new ResponseDE();
             try
             {
-                EmployeeDE dataObj = new EmployeeDE();
+                List<EmployeeDE> employeeDEs = new List<EmployeeDE>();
                 DataTable dataTable = await _customerRepo.GetEmployee(employeeDE);
                 foreach (DataRow drrow in dataTable.Rows)
                 {
+                    EmployeeDE dataObj = new EmployeeDE();
                     dataObj.Employee_ID = Convert.ToInt32(drrow["Employee_ID"]);
                     dataObj.Employee_Name = Convert.ToString(drrow["Employee_Name"]);
                     dataObj.Email_ID = Convert.ToString(drrow["Email_ID"]);
                     dataObj.Mobile_Number = Convert.ToString(drrow["Mobile_Number"]);
                     dataObj.Designation = Convert.ToString(drrow["Designation"]);
+                    employeeDEs.Add(dataObj);
                 }
                 responseDE.StatusCode = 1;
-                responseDE.data = dataObj;
+                responseDE.data = employeeDEs;
                 return responseDE;
             }
             catch (Exception)
