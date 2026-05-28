@@ -15,5 +15,8 @@ namespace Services.Interface
         Task<ResponseDE> GetCustomerMapping();
         Task<ResponseDE> GetCustomerMappingDtl(CustomerDE customerDE);
         Task<ResponseDE> SaveCustomerMapping(CustomerMappingDE customerMappingDE);
+        Task<ResponseDE> SaveCustomerLedgerCredit(CustomerLedgerDE customerLedgerDE);
+        Task<ResponseDE> SaveCustomerLedgerDebit(CustomerLedgerDE customerLedgerDE);
+        Task<ResponseDE> GetCustomerLedger(CustomerDE customerDE);
     }
 }

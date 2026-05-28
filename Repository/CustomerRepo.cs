@@ -262,5 +262,169 @@ namespace Repository
             }
         }
 
+        public async Task<ResponseDE> AMDCustomerLedgerCredit(CustomerLedgerDE customerLedgerDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+                {
+                new SqlParameter("@Customer_ID", SqlDbType.Int)
+                {
+                    Value = customerLedgerDE.Customer_ID
+                },
+
+                new SqlParameter("@Voucher", SqlDbType.VarChar)
+                {
+                    Value = customerLedgerDE.Voucher
+                },
+
+                new SqlParameter("@Particular", SqlDbType.VarChar)
+                {
+                    Value = customerLedgerDE.Particular
+                },
+
+                new SqlParameter("@GoldIn", SqlDbType.Decimal)
+                {
+                    Value = customerLedgerDE.GoldIn
+                },
+
+                new SqlParameter("@AmountIn", SqlDbType.Decimal)
+                {
+                    Value = customerLedgerDE.AmountIn
+                },
+                new SqlParameter("@Mode", SqlDbType.VarChar)
+                {
+                    Value = customerLedgerDE.Mode
+                },
+                new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+                {
+                    Direction = ParameterDirection.Output
+                },
+
+                new SqlParameter("@Status", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                }
+                };
+
+                 await _sqlConnection.FunDataTable(
+                    "usp_AMD_Customer_Ledger_CreditEntry",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+                responseDE.Message = objSqlParameter[7].Value?.ToString();
+
+                responseDE.StatusCode =
+                    objSqlParameter[9].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[8].Value)
+                    : 0;
+
+                return responseDE;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> AMDCustomerLedgerDebit(CustomerLedgerDE customerLedgerDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+                {
+                new SqlParameter("@Customer_ID", SqlDbType.Int)
+                {
+                    Value = customerLedgerDE.Customer_ID
+                },
+
+                new SqlParameter("@Voucher", SqlDbType.VarChar)
+                {
+                    Value = customerLedgerDE.Voucher
+                },
+
+                new SqlParameter("@Particular", SqlDbType.VarChar)
+                {
+                    Value = customerLedgerDE.Particular
+                },
+
+                new SqlParameter("@GoldIn", SqlDbType.Decimal)
+                {
+                    Value = customerLedgerDE.GoldIn
+                },
+
+                new SqlParameter("@AmountIn", SqlDbType.Decimal)
+                {
+                    Value = customerLedgerDE.AmountIn
+                },
+                new SqlParameter("@Mode", SqlDbType.VarChar)
+                {
+                    Value = customerLedgerDE.Mode
+                },
+                new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+                {
+                    Direction = ParameterDirection.Output
+                },
+
+                new SqlParameter("@Status", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                }
+                };
+
+                await _sqlConnection.FunDataTable(
+                   "usp_AMD_Customer_Ledger_DebitEntry",
+                   CommandType.StoredProcedure,
+                   objSqlParameter
+               );
+
+                responseDE.Message = objSqlParameter[7].Value?.ToString();
+
+                responseDE.StatusCode =
+                    objSqlParameter[8].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[9].Value)
+                    : 0;
+
+                return responseDE;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataSet> GetCustomerLedger(CustomerDE customerDE)
+        {
+            DataSet dataSet = new DataSet();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+                {
+                new SqlParameter("@Customer_ID", SqlDbType.Int)
+                {
+                    Value = customerDE.Customer_ID
+                } };
+
+                dataSet = await _sqlConnection.FunDataSet(
+                    "usp_Get_Customer_Ledger",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+
+                return dataSet;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

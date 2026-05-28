@@ -128,6 +128,60 @@ namespace SvojasOrder.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<ResponseDE> SaveCustomerLedgerCredit(CustomerLedgerDE pobjCustomerLedgerDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerService.SaveCustomerLedgerCredit(pobjCustomerLedgerDE);
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> SaveCustomerLedgerDebit(CustomerLedgerDE pobjCustomerLedgerDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerService.SaveCustomerLedgerDebit(pobjCustomerLedgerDE);
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> GetCustomerLedger(CustomerDE pobjCustomerDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerService.GetCustomerLedger(pobjCustomerDE);
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+                return responseDE;
+            }
+        }
+
 
     }
 
