@@ -171,5 +171,77 @@ namespace Services
             }
         }
 
+        public async Task<ResponseDE> SaveCustomerLedgerCredit(CustomerLedgerDE customerLedgerDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerRepo.AMDCustomerLedgerCredit(customerLedgerDE);
+
+                return responseDE;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> SaveCustomerLedgerDebit(CustomerLedgerDE customerLedgerDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                responseDE = await _customerRepo.AMDCustomerLedgerDebit(customerLedgerDE);
+
+                return responseDE;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> GetCustomerLedger(CustomerDE customerDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+            try
+            {
+                CustomerLedgerInfoDE dataObj = new CustomerLedgerInfoDE();
+                dataObj.Leadger = new List<CustomerLedgerDE>();
+                DataSet dataSet = await _customerRepo.GetCustomerLedger(customerDE);
+                foreach (DataRow drrow in dataSet.Tables[0].Rows)
+                {
+                    dataObj.Customer_Name = Convert.ToString(drrow["Customer_Name"]);
+                    dataObj.Form_Date = Convert.ToString(drrow["Form_Date"]);
+                    dataObj.To_Date = Convert.ToString(drrow["To_Date"]);
+                }
+                foreach (DataRow drrow in dataSet.Tables[1].Rows)
+                {
+                    dataObj.Leadger.Add(new CustomerLedgerDE
+                    {
+                        Trans_Date = Convert.ToString(drrow["Trans_Date"]),
+                        Voucher = Convert.ToString(drrow["Voucher"]),
+                        Particular = Convert.ToString(drrow["Particular"]),
+                        GoldOut = Convert.ToDecimal(drrow["GoldOut"]),
+                        GoldIn = Convert.ToDecimal(drrow["GoldIn"]),
+                        AmountOut = Convert.ToDecimal(drrow["AmountOut"]),
+                        AmountIn = Convert.ToDecimal(drrow["AmountIn"])
+                    });
+
+                }
+                responseDE.StatusCode = 1;
+                responseDE.data = dataObj;
+                return responseDE;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
     }
 }
