@@ -26,7 +26,7 @@ namespace Repository
             {
 
                 SqlParameter[] ObjSqlParameter = new SqlParameter[]{
-                    new SqlParameter("@UserName",SqlDbType.VarChar){Value=loginRequestDE.UserName},
+                    new SqlParameter("@User_Name",SqlDbType.VarChar){Value=loginRequestDE.UserName},
                      new SqlParameter("@Password",SqlDbType.VarChar){Value=loginRequestDE.Password},
                          // Output parameter - Message
                     new SqlParameter("@Msg", SqlDbType.VarChar, 500)

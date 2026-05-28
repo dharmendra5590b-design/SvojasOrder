@@ -23,20 +23,22 @@ namespace Services
             ResponseDE responseDE = new ResponseDE();
             try
             {
-                CustomerDE dataObj = new CustomerDE();
+                List<CustomerDE> customerDEs = new List<CustomerDE>();
                 DataTable dataTable = await _customerRepo.GetCustomer(pobjCustomerDE);
                 foreach (DataRow drrow in dataTable.Rows)
                 {
+                    CustomerDE dataObj = new CustomerDE();
                     dataObj.Customer_ID = Convert.ToInt32(drrow["Customer_ID"]);
                     dataObj.Customer_Name = Convert.ToString(drrow["Customer_Name"]);
                     dataObj.Customer_Code = Convert.ToString(drrow["Customer_Code"]);
                     dataObj.Company_Name = Convert.ToString(drrow["Company_Name"]);
                     dataObj.Mobile_Number = Convert.ToString(drrow["Mobile_Number"]);
-                    dataObj.Amount_OpeningBalance = Convert.ToDecimal(drrow["Amount_OpeningBalance"]);
-                    dataObj.Gold_OpeningBalance = Convert.ToDecimal(drrow["Gold_OpeningBalance"]);
+                    // dataObj.Amount_OpeningBalance = Convert.ToDecimal(drrow["Amount_OpeningBalance"]);
+                    // dataObj.Gold_OpeningBalance = Convert.ToDecimal(drrow["Gold_OpeningBalance"]);
+                    customerDEs.Add(dataObj);
                 }
                 responseDE.StatusCode = 1;
-                responseDE.data = dataObj;
+                responseDE.data = customerDEs;
                 return responseDE;
             }
             catch (Exception)
