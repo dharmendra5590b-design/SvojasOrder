@@ -94,21 +94,23 @@ namespace SvojasOrder.Controllers
         }
 
         [HttpGet]
-        public async Task<ResponseDE> GetCustomerMapping()
+        public async Task<List<CustomerMappingDE>> GetCustomerMapping()
         {
             ResponseDE responseDE = new ResponseDE();
+            List<CustomerMappingDE> customerDEs = new List<CustomerMappingDE>();
             try
             {
                 responseDE = await _customerService.GetCustomerMapping();
-                return responseDE;
+                customerDEs=(List<CustomerMappingDE>)responseDE.data;
             }
             catch (Exception ex)
             {
                 ErrorLog.WriteLogFile(ex);
                 responseDE.Message = "Something went wrong.";
                 responseDE.StatusCode = -1;
-                return responseDE;
+               // return responseDE;
             }
+            return customerDEs;
         }
 
         [HttpPost]

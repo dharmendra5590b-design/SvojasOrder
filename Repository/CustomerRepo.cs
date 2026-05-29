@@ -113,7 +113,12 @@ namespace Repository
                 new SqlParameter("@Customer_ID", SqlDbType.Int)
                 {
                     Value = customerDE.Customer_ID
-                } };                
+                },
+                 new SqlParameter("@Mode", SqlDbType.VarChar)
+                {
+                    Value = (customerDE.Mode==null || customerDE.Mode=="A"?"S":customerDE.Mode)
+                }
+                };                
 
                 dataTable = await _sqlConnection.FunDataTable(
                     "usp_GET_Customer_Mst",
@@ -243,9 +248,13 @@ namespace Repository
                     Value = customerMappingDE.Customer_ID
                 },
 
-                new SqlParameter("@Customer_ID", SqlDbType.Int)
+                new SqlParameter("@Employee_List", SqlDbType.VarChar)
                 {
                     Value = customerMappingDE.Employee_List
+                },
+                new SqlParameter("@Mode", SqlDbType.VarChar)
+                {
+                    Value = customerMappingDE.Mode
                 },
                 new SqlParameter("@Msg", SqlDbType.VarChar, 200)
                 {
@@ -264,11 +273,11 @@ namespace Repository
                     objSqlParameter
                 );
 
-                responseDE.Message = objSqlParameter[8].Value?.ToString();
+                responseDE.Message = objSqlParameter[3].Value?.ToString();
 
                 responseDE.StatusCode =
-                    objSqlParameter[9].Value != DBNull.Value
-                    ? Convert.ToInt32(objSqlParameter[9].Value)
+                    objSqlParameter[4].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[4].Value)
                     : 0;
 
                 responseDE.data = dataTable;
@@ -383,11 +392,11 @@ namespace Repository
                     objSqlParameter
                 );
 
-                responseDE.Message = objSqlParameter[7].Value?.ToString();
+                responseDE.Message = objSqlParameter[6].Value?.ToString();
 
                 responseDE.StatusCode =
-                    objSqlParameter[9].Value != DBNull.Value
-                    ? Convert.ToInt32(objSqlParameter[8].Value)
+                    objSqlParameter[7].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[7].Value)
                     : 0;
 
                 return responseDE;

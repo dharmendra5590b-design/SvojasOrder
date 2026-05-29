@@ -63,7 +63,7 @@ namespace Repository
             {
 
                 SqlParameter[] ObjSqlParameter = new SqlParameter[]{
-                    new SqlParameter("@UserID",DbType.String){Value=changePassword.UserID},
+                    new SqlParameter("@User_ID",DbType.String){Value=changePassword.UserID},
                      new SqlParameter("@Old_Password",DbType.String){Value=changePassword.Password},
                      new SqlParameter("@New_Password",DbType.String){Value=changePassword.NewPassword},
                      new SqlParameter("@Msg", SqlDbType.VarChar, 500)
@@ -78,8 +78,8 @@ namespace Repository
                     }
                     };
                  await IsqlConnection.FunDataTable("usp_UPDATE_User_Password", CommandType.StoredProcedure, ObjSqlParameter);
-                responseDE.Message = ObjSqlParameter[2].Value?.ToString();
-                responseDE.StatusCode = ObjSqlParameter[3].Value != DBNull.Value ? Convert.ToInt32(ObjSqlParameter[3].Value) : 0;
+                responseDE.Message = ObjSqlParameter[3].Value?.ToString();
+                responseDE.StatusCode = ObjSqlParameter[4].Value != DBNull.Value ? Convert.ToInt32(ObjSqlParameter[4].Value) : 0;
                 return responseDE;
             }
             catch (Exception)

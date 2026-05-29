@@ -12,5 +12,6 @@ namespace Domain
         public string Employee_List { get; set;}
         public string Customer_Name { get; set; }
         public int Employee_ID { get; set;}
+        public string Mode { get; set; }
     }
 }

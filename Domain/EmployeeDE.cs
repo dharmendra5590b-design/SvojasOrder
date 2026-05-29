@@ -13,7 +13,7 @@ namespace Domain
         public string Email_ID { get; set; }
         public string Mobile_Number { get; set; }
         public string Designation { get; set; }
-
+        public bool Is_Mapped { get; set; } = false;
         public string Mode { get; set; }
 
     }
