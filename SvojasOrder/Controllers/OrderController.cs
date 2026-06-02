@@ -38,7 +38,7 @@ namespace SvojasOrder.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<OrderListDE> GetListCustomerOrder()
         {
             OrderListDE orderListDE = new OrderListDE();
