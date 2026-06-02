@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -40,6 +41,28 @@ namespace Common
                 throw;
             }
             return lookUpData;
+        }
+
+        public static List<SelectItem> ConvertToSelectList(
+    DataTable dt,
+    string textColumn,
+    string valueColumn)
+        {
+            List<SelectItem> list = new List<SelectItem>();
+
+            if (dt == null || dt.Rows.Count == 0)
+                return list;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                list.Add(new SelectItem
+                {
+                    text = row[textColumn]?.ToString() ?? string.Empty,
+                    value = row[valueColumn]?.ToString() ?? string.Empty
+                });
+            }
+
+            return list;
         }
     }
 }

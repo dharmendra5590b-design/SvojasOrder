@@ -20,10 +20,14 @@ namespace SvojasOrder.Extensions
             Services.AddScoped<ILoginRepo, LoginRepo>();
             Services.AddScoped<ICustomerRepo, CustomerRepo>();
             Services.AddScoped<IUserRepo, UserRepo>();
+            Services.AddScoped<IAdminDashboardRepo, AdminDashboardRepo>();
+            Services.AddScoped<IOrderService, OrderService>();
             //Service Register
             Services.AddScoped<ILoginService, LoginService>();
             Services.AddScoped<ICustomerService,CustomerService>();
             Services.AddScoped<IUserService, UserService>();
+            Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
+            Services.AddScoped<IOrderRepo, OrderRepo>();
             //Create singleton from instance
 
             Services.AddHttpContextAccessor();
