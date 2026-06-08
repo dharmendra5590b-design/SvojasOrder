@@ -201,5 +201,192 @@ namespace Repository
                 throw;
             }
         }
+
+        public async Task<DataTable> GetOrder(OrderSearchDE orderSearchDE)
+        {
+           DataTable dataTable=new DataTable();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+ {
+    new SqlParameter("@Order_ID", SqlDbType.Int)
+    {
+        Value = orderSearchDE.order_ID
+    },
+
+    new SqlParameter("@Customer_ID", SqlDbType.Int)
+    {
+        Value = orderSearchDE.customer_ID
+    },
+
+    new SqlParameter("@Design_ID", SqlDbType.Int)
+    {
+        Value = orderSearchDE.design_ID
+    },
+
+    new SqlParameter("@Order_FromDT", SqlDbType.Int)
+    {
+        Value = orderSearchDE.order_FromDT
+    },
+
+    new SqlParameter("@Order_ToDT", SqlDbType.Int)
+    {
+        Value =orderSearchDE.order_ToDT
+    },
+
+    new SqlParameter("@PageSize", SqlDbType.Int)
+    {
+        Value = 200
+    },
+
+
+    new SqlParameter("@Mode", SqlDbType.VarChar, 200)
+    {
+        Value = orderSearchDE.mode
+    },
+ };
+
+
+                dataTable =      await _sqlConnection.FunDataTable(
+                    "usp_GET_Order_For_Customer",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+                
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataTable> GetPendingDesingOrder()
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_Get_Pending_Design_Order",
+                    CommandType.StoredProcedure
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataTable> GetReworkOrder()
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_Get_New_Rework_Order",
+                    CommandType.StoredProcedure
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataTable> GetDesignUploadedOrder()
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_Get_Design_Uploaded_Order",
+                    CommandType.StoredProcedure
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataTable> GetPendingOrderConfirmation()
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_Get_Pending_Order_Confirmation",
+                    CommandType.StoredProcedure
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataTable> GetConfirmedOrder()
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_Get_Confirmed_Order",
+                    CommandType.StoredProcedure
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataTable> GetUnderProductionOrder()
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_Get_Order_Under_Production",
+                    CommandType.StoredProcedure
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

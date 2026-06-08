@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Domain
 {
@@ -13,10 +14,10 @@ namespace Domain
         public string  Trans_Date {get;set;}
         public string Voucher { get; set;}
         public string Particular { get; set; }
-        public decimal GoldOut { get; set; }
-        public decimal GoldIn { get; set;}
-        public decimal AmountOut { get; set;}
-        public decimal AmountIn { get; set;}
+        public string GoldOut { get; set; }
+        public string GoldIn { get; set;}
+        public string AmountOut { get; set;}
+        public string AmountIn { get; set;}
         public string Mode { get; set; }
     }
 

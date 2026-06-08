@@ -486,7 +486,16 @@ namespace Repository
                 new SqlParameter("@Customer_ID", SqlDbType.Int)
                 {
                     Value = customerDE.Customer_ID
-                } };
+                },
+                new SqlParameter("@FromDT", SqlDbType.VarChar)
+                {
+                    Value = customerDE.From_Date
+                },
+                new SqlParameter("@ToDT", SqlDbType.VarChar)
+                {
+                    Value = customerDE.To_Date
+                }
+                };
 
                 dataSet = await _sqlConnection.FunDataSet(
                     "usp_Get_Customer_Ledger",

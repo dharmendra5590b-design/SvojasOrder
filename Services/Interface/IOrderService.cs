@@ -11,5 +11,8 @@ namespace Services.Interface
     {
         Task<OrderListDE> GetListCustomerOrder();
         Task<ResponseDE> SaveOrder(OrderRequestDE orderRequestDE);
+        Task<List<OrderDetailDE>> GetOrderDetail(OrderSearchDE orderSearchDE);
+        Task<List<OrderDetailsGridDE>> GetGridOrder(OrderSearchDE orderSearchDE);
+
     }
 }

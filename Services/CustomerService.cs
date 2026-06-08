@@ -217,8 +217,8 @@ namespace Services
                 foreach (DataRow drrow in dataSet.Tables[0].Rows)
                 {
                     dataObj.Customer_Name = Convert.ToString(drrow["Customer_Name"]);
-                    dataObj.Form_Date = Convert.ToString(drrow["Form_Date"]);
-                    dataObj.To_Date = Convert.ToString(drrow["To_Date"]);
+                    dataObj.Form_Date = Convert.ToString(drrow["FromDate"]);
+                    dataObj.To_Date = Convert.ToString(drrow["ToDate"]);
                 }
                 foreach (DataRow drrow in dataSet.Tables[1].Rows)
                 {
@@ -227,10 +227,10 @@ namespace Services
                         Trans_Date = Convert.ToString(drrow["Trans_Date"]),
                         Voucher = Convert.ToString(drrow["Voucher"]),
                         Particular = Convert.ToString(drrow["Particular"]),
-                        GoldOut = Convert.ToDecimal(drrow["GoldOut"]),
-                        GoldIn = Convert.ToDecimal(drrow["GoldIn"]),
-                        AmountOut = Convert.ToDecimal(drrow["AmountOut"]),
-                        AmountIn = Convert.ToDecimal(drrow["AmountIn"])
+                        GoldOut = Convert.ToString(drrow["GoldOut"]),
+                        GoldIn = Convert.ToString(drrow["GoldIn"]),
+                        AmountOut = Convert.ToString(drrow["AmountOut"]),
+                        AmountIn = Convert.ToString(drrow["AmountIn"])
                     });
 
                 }
