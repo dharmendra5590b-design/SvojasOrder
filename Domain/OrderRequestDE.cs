@@ -18,7 +18,7 @@ namespace Domain
 
         public string? Size { get; set; }
         public string? Weight { get; set; }
-
+        public string? Quantity { get; set; }
         public int? Stone_ID { get; set; }
 
         public bool? Is_Colour_Required { get; set; }

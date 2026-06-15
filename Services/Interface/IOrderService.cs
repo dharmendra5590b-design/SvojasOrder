@@ -11,8 +11,21 @@ namespace Services.Interface
     {
         Task<OrderListDE> GetListCustomerOrder();
         Task<ResponseDE> SaveOrder(OrderRequestDE orderRequestDE);
+        Task<ResponseDE> AMDCancelOrder(OrderCancelRequestDE orderCancelRequestDE);
         Task<List<OrderDetailDE>> GetOrderDetail(OrderSearchDE orderSearchDE);
         Task<List<OrderDetailsGridDE>> GetGridOrder(OrderSearchDE orderSearchDE);
-
+        Task<List<OrderViewInfoDE>> GetOrderView(int OrderID);
+        Task<List<OrderDesignInfoDE>> GetPendingDesingOrder();
+        Task<List<OrderDesignInfoDE>> GetDesingOrder(int DesignerID);
+        Task<List<OrderReworkInfoDE>> GetReworkOrder();
+        Task<List<OrderDesignUploadInfoDE>> GetDesignUploadOrder();
+        Task<List<OrderPendingConfirmationInfoDE>> GetPendingOrderConfirmation();
+        Task<List<OrderConfirmedInfo>> GetConfirmedOrder();
+        Task<List<OrderUnderProductionInfoDE>> GetUnderProductionOrder();
+        Task<ResponseDE> AMDAssignDesigner(OrderDesignRequestDE requestDE);
+        Task<ResponseDE> AMDOrderDesingUpload(OrderDesingUploadDE requestDE);
+        Task<ResponseDE> AMDOrderDesignApprove(OrderDesignApproveDE request);
+        Task<ResponseDE> CreateReOrder(ReOrderDE request);
+        Task<ResponseDE> OrderReworkDtl(OrderReworkDtlDE request);
     }
 }

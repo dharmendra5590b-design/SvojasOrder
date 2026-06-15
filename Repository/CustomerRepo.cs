@@ -235,6 +235,25 @@ namespace Repository
             }
         }
 
+        public async Task<DataTable> GetDesigner()
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_Get_Designer",
+                    CommandType.StoredProcedure
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public async Task<ResponseDE> AMDCustomerMapping(CustomerMappingDE customerMappingDE)
         {
             ResponseDE responseDE = new ResponseDE();

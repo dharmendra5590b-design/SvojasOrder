@@ -203,6 +203,21 @@ namespace SvojasOrder.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<List<DesignerDE>> GetDesigner()
+        {
+            List<DesignerDE> designerDEs = new List<DesignerDE>();
+            try
+            {
+                designerDEs = await _customerService.GetDesigner();
+                return designerDEs;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return designerDEs;
+            }
+        }
 
     }
 

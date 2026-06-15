@@ -20,5 +20,7 @@ namespace Repository.Interface
         Task<ResponseDE> AMDCustomerLedgerDebit(CustomerLedgerDE customerLedgerDE);
         Task<DataSet> GetCustomerLedger(CustomerDE customerDE);
         Task<ResponseDE> AMDEmployee(EmployeeDE employeeDE);
+
+        Task<DataTable> GetDesigner();
     }
 }

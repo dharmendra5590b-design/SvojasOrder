@@ -109,6 +109,29 @@ namespace Services
             }
         }
 
+        public async Task<List<DesignerDE>> GetDesigner()
+        {
+           
+            try
+            {
+                List<DesignerDE> designerDE = new List<DesignerDE>();
+                DataTable dataTable = await _customerRepo.GetDesigner();
+                foreach (DataRow drrow in dataTable.Rows)
+                {
+                    DesignerDE dataObj = new DesignerDE();
+                    dataObj.Designer_ID = Convert.ToInt32(drrow["Designer_ID"]);
+                    dataObj.Designer_Name = Convert.ToString(drrow["Designer_Name"]);
+                    designerDE.Add(dataObj);
+                }
+                return designerDE;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<ResponseDE> GetCustomerMapping()
         {
             ResponseDE responseDE = new ResponseDE();

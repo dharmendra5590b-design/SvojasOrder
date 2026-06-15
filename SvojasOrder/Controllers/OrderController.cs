@@ -38,6 +38,7 @@ namespace SvojasOrder.Controllers
                     Gold_Colour_ID = dto.Gold_Colour_ID,
                     Size = dto.Size,
                     Weight = dto.Weight,
+                    Quantity=dto.Quantity,
                     Stone_ID = dto.Stone_ID,
                     Is_Colour_Required = dto.Is_Colour_Required,
                     Colour_Stone_ID = dto.Colour_Stone_ID,
@@ -57,6 +58,29 @@ namespace SvojasOrder.Controllers
                 };
 
                 responseDE = await _orderService.SaveOrder(order);
+
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> CancelOrder(OrderCancelRequestDE orderCancelRequestDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+               
+                responseDE = await _orderService.AMDCancelOrder(orderCancelRequestDE);
 
                 return responseDE;
             }
@@ -119,6 +143,259 @@ namespace SvojasOrder.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<List<OrderViewInfoDE>> GetOrderView(int OrderID)
+        {
+            List<OrderViewInfoDE> dataObj = new List<OrderViewInfoDE>();
+            try
+            {
+                dataObj = await _orderService.GetOrderView(OrderID);
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+        [HttpGet]
+        public async Task<List<OrderDesignInfoDE>> GetPendingDesingOrder()
+        {
+            List<OrderDesignInfoDE> dataObj = new List<OrderDesignInfoDE>();
+            try
+            {
+                dataObj = await _orderService.GetPendingDesingOrder();
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+        [HttpGet]
+        public async Task<List<OrderDesignInfoDE>> GetDesingOrder(int DesignerID)
+        {
+            List<OrderDesignInfoDE> dataObj = new List<OrderDesignInfoDE>();
+            try
+            {
+                dataObj = await _orderService.GetDesingOrder(DesignerID);
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+        [HttpGet]
+        public async Task<List<OrderReworkInfoDE>> GetReworkOrder()
+        {
+            List<OrderReworkInfoDE> dataObj = new List<OrderReworkInfoDE>();
+            try
+            {
+                dataObj = await _orderService.GetReworkOrder();
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+        [HttpGet]
+        public async Task<List<OrderDesignUploadInfoDE>> GetDesignUploadOrder()
+        {
+            List<OrderDesignUploadInfoDE> dataObj = new List<OrderDesignUploadInfoDE>();
+            try
+            {
+                dataObj = await _orderService.GetDesignUploadOrder();
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+        [HttpGet]
+        public async Task<List<OrderPendingConfirmationInfoDE>> GetPendingOrderConfirmation()
+        {
+            List<OrderPendingConfirmationInfoDE> dataObj = new List<OrderPendingConfirmationInfoDE>();
+            try
+            {
+                dataObj = await _orderService.GetPendingOrderConfirmation();
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+        [HttpGet]
+        public async Task<List<OrderConfirmedInfo>> GetConfirmedOrder()
+        {
+            List<OrderConfirmedInfo> dataObj = new List<OrderConfirmedInfo>();
+            try
+            {
+                dataObj = await _orderService.GetConfirmedOrder();
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+        [HttpGet]
+        public async Task<List<OrderUnderProductionInfoDE>> GetUnderProductionOrder()
+        {
+            List<OrderUnderProductionInfoDE> dataObj = new List<OrderUnderProductionInfoDE>();
+            try
+            {
+                dataObj = await _orderService.GetUnderProductionOrder();
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> AssignDesigner(OrderDesignRequestDE requestDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+
+                responseDE = await _orderService.AMDAssignDesigner(requestDE);
+
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> OrderDesingUploadCAD(OrderDesingUploadRequest requestDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                var OrderUpload = new OrderDesingUploadDE
+                {
+                    Order_ID = requestDE.Order_ID,
+                    CAD_Image_URL = await SaveFile(requestDE.CADImage)
+                };
+                responseDE = await _orderService.AMDOrderDesingUpload(OrderUpload);
+
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+
+                return responseDE;
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<ResponseDE> OrderDesignApprove(OrderDesignApproveDE request)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+
+                responseDE = await _orderService.AMDOrderDesignApprove(request);
+
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> CreateReOrder(ReOrderDE requestDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                
+                responseDE = await _orderService.CreateReOrder(requestDE);
+
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> OrderReworkDtl(OrderReworkDtlDto requestDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                var OrderRequest = new OrderReworkDtlDE
+                {
+                    Order_ID = requestDE.Order_ID,
+                    User_ID = requestDE.User_ID,
+                    Specification = requestDE.Specification,
+                    Rework_Image_URL = await SaveFile(requestDE.CADImage)
+                };
+                responseDE = await _orderService.OrderReworkDtl(OrderRequest);
+
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+
+                return responseDE;
+            }
+        }
         private async Task<string?> SaveFile(IFormFile? file)
         {
             if (file == null || file.Length == 0)
@@ -142,8 +419,9 @@ namespace SvojasOrder.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            return "wwwroot/uploads/" + fileName;
+            return "uploads/" + fileName;
         }
+
 
     }
 

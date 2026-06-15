@@ -12,12 +12,20 @@ namespace Repository.Interface
     {
         Task<DataSet> GetListCustomerOrder();
         Task<ResponseDE> AMDOrderRequest(OrderRequestDE orderRequest);
+        Task<ResponseDE> AMDCancelOrder(OrderCancelRequestDE orderCancelRequestDE);
+        Task<ResponseDE> AMDOrderDesingUpload(OrderDesingUploadDE request);
         Task<DataTable> GetOrder(OrderSearchDE orderSearchDE);
+        Task<DataTable> GetOrderView(int OrderID);
         Task<DataTable> GetPendingDesingOrder();
+        Task<DataTable> GetDesingOrder(int DesignerID);
         Task<DataTable> GetReworkOrder();
         Task<DataTable> GetDesignUploadedOrder();
         Task<DataTable> GetPendingOrderConfirmation();
         Task<DataTable> GetConfirmedOrder();
         Task<DataTable> GetUnderProductionOrder();
+        Task<ResponseDE> AMDAssignDesigner(OrderDesignRequestDE request);
+        Task<ResponseDE> AMDOrderDesignApprove(OrderDesignApproveDE request);
+        Task<ResponseDE> AMDCreateReOrder(ReOrderDE request);
+        Task<ResponseDE> AMDOrderReworkDtl(OrderReworkDtlDE request);
     }
 }

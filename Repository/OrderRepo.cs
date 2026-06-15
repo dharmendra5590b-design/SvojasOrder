@@ -93,7 +93,10 @@ namespace Repository
     {
         Value = (object?)orderRequest.Weight ?? DBNull.Value
     },
-
+    new SqlParameter("@Quantity", SqlDbType.VarChar, 50)
+    {
+        Value = (object?)orderRequest.Quantity ?? DBNull.Value
+    },
     new SqlParameter("@Stone_ID", SqlDbType.Int)
     {
         Value = (object?)orderRequest.Stone_ID ?? DBNull.Value
@@ -187,14 +190,388 @@ namespace Repository
                     objSqlParameter
                 );
 
-                responseDE.Message = objSqlParameter[24].Value?.ToString();
+                responseDE.Message = objSqlParameter[25].Value?.ToString();
 
                 responseDE.StatusCode =
-                    objSqlParameter[25].Value != DBNull.Value
-                    ? Convert.ToInt32(objSqlParameter[25].Value)
+                    objSqlParameter[26].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[26].Value)
                     : 0;
 
                 return responseDE;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> AMDCancelOrder(OrderCancelRequestDE orderCancelRequestDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+ {
+    new SqlParameter("@Order_ID", SqlDbType.Int)
+    {
+        Value = (object?)orderCancelRequestDE.Order_ID ?? DBNull.Value
+    },
+
+    new SqlParameter("@User_ID", SqlDbType.Int)
+    {
+        Value = (object?)orderCancelRequestDE.User_ID ?? DBNull.Value
+    },
+    new SqlParameter("@Cancel_Reason", SqlDbType.VarChar, 250)
+    {
+        Value = (object?)orderCancelRequestDE.Cancel_Reason ?? DBNull.Value
+    },
+
+    new SqlParameter("@Cancelation_Charge", SqlDbType.Float)
+    {
+        Value = (object?)orderCancelRequestDE.Cancelation_Charge ?? DBNull.Value
+    },
+
+    new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+    {
+        Direction = ParameterDirection.Output
+    },
+
+    new SqlParameter("@Status", SqlDbType.Int)
+    {
+        Direction = ParameterDirection.Output
+    }
+ };
+
+
+                await _sqlConnection.FunDataTable(
+                    "usp_CANCEL_Order",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+                responseDE.Message = objSqlParameter[4].Value?.ToString();
+
+                responseDE.StatusCode =
+                    objSqlParameter[5].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[5].Value)
+                    : 0;
+
+                return responseDE;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> AMDAssignDesigner(OrderDesignRequestDE request)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+                {
+            new SqlParameter("@Order_ID", SqlDbType.BigInt)
+            {
+                Value = (object?)request.Order_ID ?? DBNull.Value
+            },
+
+            new SqlParameter("@Designer_ID", SqlDbType.Int)
+            {
+                Value = (object?)request.Designer_ID ?? DBNull.Value
+            },
+
+            new SqlParameter("@Admin_Specification", SqlDbType.VarChar)
+            {
+                Value = (object?)request.Admin_Specification ?? DBNull.Value
+            },
+
+            new SqlParameter("@Is_High_Priority", SqlDbType.Bit)
+            {
+                Value = (object?)request.Is_High_Priority ?? DBNull.Value
+            },
+
+            new SqlParameter("@Design_Expected_DT", SqlDbType.Date)
+            {
+                Value = (object?)request.Design_Expected_DT ?? DBNull.Value
+            },
+
+            new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+            {
+                Direction = ParameterDirection.Output
+            },
+
+            new SqlParameter("@Status", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            }
+                };
+
+                await _sqlConnection.FunDataTable(
+                    "usp_UPDATE_Order_Assign_To_Designer", // Replace with your SP name
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+                responseDE.Message = objSqlParameter[5].Value?.ToString();
+
+                responseDE.StatusCode =
+                    objSqlParameter[6].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[6].Value)
+                    : 0;
+
+                return responseDE;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> AMDOrderDesingUpload(OrderDesingUploadDE request)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+                {
+            new SqlParameter("@Order_ID", SqlDbType.BigInt)
+            {
+                Value = (object?)request.Order_ID ?? DBNull.Value
+            },
+
+            new SqlParameter("@CAD_Image_URL", SqlDbType.VarChar)
+            {
+                Value = (object?)request.CAD_Image_URL ?? DBNull.Value
+            },
+
+            new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+            {
+                Direction = ParameterDirection.Output
+            },
+
+            new SqlParameter("@Status", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            }
+                };
+
+                await _sqlConnection.FunDataTable(
+                    "usp_UPDATE_Order_Design_Upload", // Replace with your SP name
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+                responseDE.Message = objSqlParameter[2].Value?.ToString();
+
+                responseDE.StatusCode =
+                    objSqlParameter[3].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[3].Value)
+                    : 0;
+
+                return responseDE;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> AMDOrderDesignApprove(OrderDesignApproveDE request)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+            new SqlParameter("@Order_ID", SqlDbType.Int)
+            {
+                Value = request.Order_ID ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Designer_Weight", SqlDbType.VarChar, 50)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Designer_Weight)
+                    ? DBNull.Value
+                    : request.Designer_Weight
+            },
+
+            new SqlParameter("@Designer_Diamond_Weight", SqlDbType.VarChar, 50)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Designer_Diamond_Weight)
+                    ? DBNull.Value
+                    : request.Designer_Diamond_Weight
+            },
+
+            new SqlParameter("@Designer_NoOf_Diamonds", SqlDbType.VarChar, 50)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Designer_NoOf_Diamonds)
+                    ? DBNull.Value
+                    : request.Designer_NoOf_Diamonds
+            },
+
+            new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+            {
+                Direction = ParameterDirection.Output
+            },
+
+            new SqlParameter("@Status", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            }
+        };
+
+                await _sqlConnection.FunDataTable(
+                    "usp_UPDATE_Order_Design_Approve",
+                    CommandType.StoredProcedure,
+                    parameters);
+
+                return new ResponseDE
+                {
+                    Message = parameters[4].Value?.ToString(),
+                    StatusCode = parameters[5].Value != DBNull.Value
+                        ? Convert.ToInt32(parameters[5].Value)
+                        : 0
+                };
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> AMDCreateReOrder(ReOrderDE request)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+            new SqlParameter("@Order_ID", SqlDbType.BigInt)
+            {
+                Value = request.Order_ID ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Customer_ID", SqlDbType.Int)
+            {
+                Value = request.Customer_ID ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Quantity", SqlDbType.VarChar, 50)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Quantity)
+                    ? DBNull.Value
+                    : request.Quantity
+            },
+
+            new SqlParameter("@Delivery_Date", SqlDbType.Date)
+            {
+                Value = request.Delivery_Date ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Mode", SqlDbType.Char, 1)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Mode)
+                    ? "A"
+                    : request.Mode
+            },
+
+            new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+            {
+                Direction = ParameterDirection.Output
+            },
+
+            new SqlParameter("@Status", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            }
+        };
+
+                await _sqlConnection.FunDataTable(
+                    "usp_CREATE_ReOrder_Mst",
+                    CommandType.StoredProcedure,
+                    parameters);
+
+                return new ResponseDE
+                {
+                    Message = parameters[5].Value?.ToString(),
+                    StatusCode = parameters[6].Value != DBNull.Value
+                        ? Convert.ToInt32(parameters[6].Value)
+                        : 0
+                };
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> AMDOrderReworkDtl(OrderReworkDtlDE request)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+            new SqlParameter("@Order_ID", SqlDbType.BigInt)
+            {
+                Value = request.Order_ID ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@SrNo", SqlDbType.Int)
+            {
+                Value = request.SrNo ?? 0
+            },
+
+            new SqlParameter("@Specification", SqlDbType.VarChar)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Specification)
+                    ? DBNull.Value
+                    : request.Specification
+            },
+
+            new SqlParameter("@Rework_Image_URL", SqlDbType.VarChar, 250)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Rework_Image_URL)
+                    ? DBNull.Value
+                    : request.Rework_Image_URL
+            },
+
+            new SqlParameter("@User_ID", SqlDbType.Int)
+            {
+                Value = request.User_ID ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Mode", SqlDbType.Char, 1)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Mode)
+                    ? "A"
+                    : request.Mode
+            },
+
+            new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+            {
+                Direction = ParameterDirection.Output
+            },
+
+            new SqlParameter("@Status", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            }
+        };
+
+                await _sqlConnection.FunDataTable(
+                    "usp_AMD_tbl_Order_Rework_Dtl",
+                    CommandType.StoredProcedure,
+                    parameters);
+
+                return new ResponseDE
+                {
+                    Message = parameters[6].Value?.ToString(),
+                    StatusCode = parameters[7].Value != DBNull.Value
+                        ? Convert.ToInt32(parameters[7].Value)
+                        : 0
+                };
             }
             catch (Exception)
             {
@@ -263,6 +640,37 @@ namespace Repository
             }
         }
 
+        public async Task<DataTable> GetOrderView(int OrderID)
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+ {
+    new SqlParameter("@Order_ID", SqlDbType.Int)
+    {
+        Value = OrderID
+    }
+ };
+
+
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_GET_Order_For_View",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
         public async Task<DataTable> GetPendingDesingOrder()
         {
             DataTable dataTable = new DataTable();
@@ -273,6 +681,34 @@ namespace Repository
                 dataTable = await _sqlConnection.FunDataTable(
                     "usp_Get_Pending_Design_Order",
                     CommandType.StoredProcedure
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataTable> GetDesingOrder(int DesignerID)
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+ {
+    new SqlParameter("@Designer_ID", SqlDbType.Int)
+    {
+        Value = DesignerID
+    }
+ };
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_Get_Designerwise_Order",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
                 );
 
 

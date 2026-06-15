@@ -12,6 +12,7 @@
 
         public string? Size { get; set; }
         public string? Weight { get; set; }
+        public string? Quantity { get; set; }
 
         public int? Stone_ID { get; set; }
 
