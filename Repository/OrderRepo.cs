@@ -579,6 +579,60 @@ namespace Repository
             }
         }
 
+        public async Task<ResponseDE> AMDCustomerOrderConfirm(OrderConfirmDE request)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+            new SqlParameter("@Order_ID", SqlDbType.Int)
+            {
+                Value = request.Order_ID
+            },
+
+            new SqlParameter("@Action_Type", SqlDbType.VarChar, 50)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Action_Type)
+                    ? "CONFIRM"
+                    : request.Action_Type
+            },
+
+            new SqlParameter("@Rework_Specification", SqlDbType.VarChar)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Rework_Specification)
+                    ? DBNull.Value
+                    : request.Rework_Specification
+            },
+
+            new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+            {
+                Direction = ParameterDirection.Output
+            },
+
+            new SqlParameter("@Status", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            }
+        };
+
+                await _sqlConnection.FunDataTable(
+                    "usp_UPDATE_Order_Confirm",
+                    CommandType.StoredProcedure,
+                    parameters);
+
+                return new ResponseDE
+                {
+                    Message = parameters[3].Value?.ToString(),
+                    StatusCode = parameters[4].Value != DBNull.Value
+                        ? Convert.ToInt32(parameters[4].Value)
+                        : 0
+                };
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public async Task<DataTable> GetOrder(OrderSearchDE orderSearchDE)
         {
            DataTable dataTable=new DataTable();
@@ -707,6 +761,34 @@ namespace Repository
  };
                 dataTable = await _sqlConnection.FunDataTable(
                     "usp_Get_Designerwise_Order",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataTable> GetOperator(int OrderID)
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+ {
+    new SqlParameter("@Order_ID", SqlDbType.Int)
+    {
+        Value = OrderID
+    }
+ };
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_Get_DataEntry_Operator",
                     CommandType.StoredProcedure,
                     objSqlParameter
                 );

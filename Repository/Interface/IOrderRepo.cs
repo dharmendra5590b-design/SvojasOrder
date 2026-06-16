@@ -18,6 +18,7 @@ namespace Repository.Interface
         Task<DataTable> GetOrderView(int OrderID);
         Task<DataTable> GetPendingDesingOrder();
         Task<DataTable> GetDesingOrder(int DesignerID);
+        Task<DataTable> GetOperator(int OrderID);
         Task<DataTable> GetReworkOrder();
         Task<DataTable> GetDesignUploadedOrder();
         Task<DataTable> GetPendingOrderConfirmation();
@@ -27,5 +28,6 @@ namespace Repository.Interface
         Task<ResponseDE> AMDOrderDesignApprove(OrderDesignApproveDE request);
         Task<ResponseDE> AMDCreateReOrder(ReOrderDE request);
         Task<ResponseDE> AMDOrderReworkDtl(OrderReworkDtlDE request);
+        Task<ResponseDE> AMDCustomerOrderConfirm(OrderConfirmDE request);
     }
 }

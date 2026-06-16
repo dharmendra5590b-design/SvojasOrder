@@ -319,6 +319,32 @@ namespace Services
             }
         }
 
+        public async Task<List<EmployeeDE>> GetOperator(int OrderID)
+        {
+            try
+            {
+
+                DataTable dataTable = await _orderRepo.GetOperator(OrderID);
+                List<EmployeeDE> employee = new List<EmployeeDE>();
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    employee.Add(new EmployeeDE
+                    {
+                        Employee_ID = Convert.ToInt32(row["Employee_ID"]),
+                        Employee_Name = Convert.ToString(row["Employee_Name"]),
+
+                    });
+                }
+                return employee;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<List<OrderReworkInfoDE>> GetReworkOrder()
         {
             try
@@ -607,6 +633,20 @@ namespace Services
             {
 
                 return await _orderRepo.AMDOrderReworkDtl(request);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> CustomerOrderConfirm(OrderConfirmDE request)
+        {
+            try
+            {
+
+                return await _orderRepo.AMDCustomerOrderConfirm(request);
             }
             catch (Exception)
             {

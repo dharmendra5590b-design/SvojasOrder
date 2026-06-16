@@ -271,6 +271,22 @@ namespace SvojasOrder.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<List<EmployeeDE>> GetOperator(int OrderID)
+        {
+            List<EmployeeDE> dataObj = new List<EmployeeDE>();
+            try
+            {
+                dataObj = await _orderService.GetOperator(OrderID);
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
         [HttpPost]
         public async Task<ResponseDE> AssignDesigner(OrderDesignRequestDE requestDE)
         {
@@ -383,6 +399,28 @@ namespace SvojasOrder.Controllers
                     Rework_Image_URL = await SaveFile(requestDE.CADImage)
                 };
                 responseDE = await _orderService.OrderReworkDtl(OrderRequest);
+
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> CustomerOrderConfirm(OrderConfirmDE requestDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                responseDE = await _orderService.CustomerOrderConfirm(requestDE);
 
                 return responseDE;
             }

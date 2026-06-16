@@ -15,6 +15,7 @@ namespace Services.Interface
         Task<List<OrderDetailDE>> GetOrderDetail(OrderSearchDE orderSearchDE);
         Task<List<OrderDetailsGridDE>> GetGridOrder(OrderSearchDE orderSearchDE);
         Task<List<OrderViewInfoDE>> GetOrderView(int OrderID);
+        Task<List<EmployeeDE>> GetOperator(int OrderID);
         Task<List<OrderDesignInfoDE>> GetPendingDesingOrder();
         Task<List<OrderDesignInfoDE>> GetDesingOrder(int DesignerID);
         Task<List<OrderReworkInfoDE>> GetReworkOrder();
@@ -27,5 +28,6 @@ namespace Services.Interface
         Task<ResponseDE> AMDOrderDesignApprove(OrderDesignApproveDE request);
         Task<ResponseDE> CreateReOrder(ReOrderDE request);
         Task<ResponseDE> OrderReworkDtl(OrderReworkDtlDE request);
+        Task<ResponseDE> CustomerOrderConfirm(OrderConfirmDE request);
     }
 }
