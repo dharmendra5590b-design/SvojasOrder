@@ -91,7 +91,7 @@ namespace Services
         {
             try
             {
-                orderSearchDE.mode = "S";
+                orderSearchDE.mode = orderSearchDE.mode=="C"? orderSearchDE.mode: "S";
                 DataTable dataTable = await _orderRepo.GetOrder(orderSearchDE);
                 List<OrderDetailDE> orders = new List<OrderDetailDE>();
 
@@ -99,62 +99,66 @@ namespace Services
                 {
                     orders.Add(new OrderDetailDE
                     {
-                        Order_ID = dr.Field<int>("Order_ID"),
-                        Order_Number = dr["Order_Number"]?.ToString(),
-                        Order_Date = dr.Field<DateTime?>("Order_Date"),
-                        Customer_ID = dr.Field<int?>("Customer_ID"),
-                        Design_ID = dr.Field<int?>("Design_ID"),
-                        Karat_ID = dr.Field<int?>("Karat_ID"),
-                        Karat_Percent = dr.Field<decimal?>("Karat_Percent"),
-                        Design_Type_ID = dr.Field<int?>("Design_Type_ID"),
-                        Gold_Colour_ID = dr.Field<int?>("Gold_Colour_ID"),
-                        Size = dr["Size"]?.ToString(),
-                        Weight = dr.Field<decimal?>("Weight"),
+                        Order_ID = dr.GetNullableInt("Order_ID") ?? 0,
+                        Order_Number = dr.GetString("Order_Number"),
+                        Order_Date = dr.GetNullableDateTime("Order_Date"),
 
-                        Stone_ID = dr.Field<int?>("Stone_ID"),
-                        Is_Colour_Required = Convert.ToBoolean(dr["Is_Colour_Required"]),
-                        Colour_Stone_ID = dr.Field<int?>("Colour_Stone_ID"),
-                        Colour_Stone = dr["Colour_Stone"]?.ToString(),
+                        Customer_ID = dr.GetNullableInt("Customer_ID"),
+                        Design_ID = dr.GetNullableInt("Design_ID"),
+                        Karat_ID = dr.GetNullableInt("Karat_ID"),
+                        Karat_Percent = dr.GetNullableDecimal("Karat_Percent"),
+                        Design_Type_ID = dr.GetNullableInt("Design_Type_ID"),
+                        Gold_Colour_ID = dr.GetNullableInt("Gold_Colour_ID"),
 
-                        Is_Certificate_Required = Convert.ToBoolean(dr["Is_Certificate_Required"]),
-                        Cretificate_ID = dr.Field<int?>("Cretificate_ID"),
-                        Diamond_Quality_ID = dr.Field<int?>("Diamond_Quality_ID"),
-                        Diamond_Weight = dr.Field<decimal?>("Diamond_Weight"),
-                        NoOf_Diamonds = dr.Field<int?>("NoOf_Diamonds"),
+                        Size = dr.GetString("Size"),
+                        Weight = dr.GetNullableDecimal("Weight"),
 
-                        Delivery_Date = dr.Field<DateTime?>("Delivery_Date"),
-                        Specification = dr["Specification"]?.ToString(),
+                        Stone_ID = dr.GetNullableInt("Stone_ID"),
 
-                        Front_Image_URL = dr["Front_Image_URL"]?.ToString(),
-                        Top_Image_URL = dr["Top_Image_URL"]?.ToString(),
-                        Side_Image_URL = dr["Side_Image_URL"]?.ToString(),
-                        Back_Image_URL = dr["Back_Image_URL"]?.ToString(),
+                        Is_Colour_Required = dr.GetBool("Is_Colour_Required"),
+                        Colour_Stone_ID = dr.GetNullableInt("Colour_Stone_ID"),
+                        Colour_Stone = dr.GetString("Colour_Stone"),
+                        Quantity = dr.GetString("Quantity"),
 
-                        IS_Editable = Convert.ToBoolean(dr["IS_Editable"]),
+                        Is_Certificate_Required = dr.GetBool("Is_Certificate_Required"),
+                        Cretificate_ID = dr.GetNullableInt("Cretificate_ID"),
+                        Diamond_Quality_ID = dr.GetNullableInt("Diamond_Quality_ID"),
+                        Diamond_Weight = dr.GetNullableDecimal("Diamond_Weight"),
+                        NoOf_Diamonds = dr.GetNullableInt("NoOf_Diamonds"),
 
-                        Is_Design_Approved = Convert.ToBoolean(dr["Is_Design_Approved"]),
-                        CAD_Image_URL = dr["CAD_Image_URL"]?.ToString(),
+                        Delivery_Date = dr.GetNullableDateTime("Delivery_Date"),
+                        Specification = dr.GetString("Specification"),
 
-                        Designer_Weight = dr.Field<decimal?>("Designer_Weight"),
-                        Designer_Diamond_Weight = dr.Field<decimal?>("Designer_Diamond_Weight"),
-                        Designer_NoOf_Diamonds = dr.Field<int?>("Designer_NoOf_Diamonds"),
+                        Front_Image_URL = dr.GetString("Front_Image_URL"),
+                        Top_Image_URL = dr.GetString("Top_Image_URL"),
+                        Side_Image_URL = dr.GetString("Side_Image_URL"),
+                        Back_Image_URL = dr.GetString("Back_Image_URL"),
 
-                        Is_Confirmable = Convert.ToBoolean(dr["Is_Confirmable"]),
+                        IS_Editable = dr.GetBool("IS_Editable"),
 
-                        Is_Order_Completed = Convert.ToBoolean(dr["Is_Order_Completed"]),
-                        Order_Complete_DT = dr.Field<DateTime?>("Order_Complete_DT"),
+                        Is_Design_Approved = dr.GetBool("Is_Design_Approved"),
+                        CAD_Image_URL = dr.GetString("CAD_Image_URL"),
 
-                        Final_Gross_Weight = dr.Field<decimal?>("Final_Gross_Weight"),
-                        Final_Noof_Diamonds = dr.Field<int?>("Final_Noof_Diamonds"),
-                        Final_Diamond_Weight = dr.Field<decimal?>("Final_Diamond_Weight"),
+                        Designer_Weight = dr.GetNullableDecimal("Designer_Weight"),
+                        Designer_Diamond_Weight = dr.GetNullableDecimal("Designer_Diamond_Weight"),
+                        Designer_NoOf_Diamonds = dr.GetNullableInt("Designer_NoOf_Diamonds"),
 
-                        NoOfColour_Stone = dr.Field<int?>("NoOfColour_Stone"),
-                        ColourStone_Weight = dr.Field<decimal?>("ColourStone_Weight"),
+                        Is_Confirmable = dr.GetBool("Is_Confirmable"),
 
-                        Others_NoOfColour_Stone = dr.Field<int?>("Others_NoOfColour_Stone"),
-                        Others_Colour_Stone_Weight = dr.Field<decimal?>("Others_Colour_Stone_Weight"),
+                        Is_Order_Completed = dr.GetBool("Is_Order_Completed"),
+                        Order_Complete_DT = dr.GetNullableDateTime("Order_Complete_DT"),
 
-                        Final_Net_Weight = dr.Field<decimal?>("Final_Net_Weight")
+                        Final_Gross_Weight = dr.GetNullableDecimal("Final_Gross_Weight"),
+                        Final_Noof_Diamonds = dr.GetNullableInt("Final_Noof_Diamonds"),
+                        Final_Diamond_Weight = dr.GetNullableDecimal("Final_Diamond_Weight"),
+
+                        NoOfColour_Stone = dr.GetNullableInt("NoOfColour_Stone"),
+                        ColourStone_Weight = dr.GetNullableDecimal("ColourStone_Weight"),
+
+                        Others_NoOfColour_Stone = dr.GetNullableInt("Others_NoOfColour_Stone"),
+                        Others_Colour_Stone_Weight = dr.GetNullableDecimal("Others_Colour_Stone_Weight"),
+
+                        Final_Net_Weight = dr.GetNullableDecimal("Final_Net_Weight")
                     });
                 }
                 return orders;
@@ -647,6 +651,34 @@ namespace Services
             {
 
                 return await _orderRepo.AMDCustomerOrderConfirm(request);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> OrderAssignToProduction(OrderAssignToProductionDE request)
+        {
+            try
+            {
+
+                return await _orderRepo.AMDOrderAssignToProduction(request);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> OrderComplete(OrderCompleteDE request)
+        {
+            try
+            {
+
+                return await _orderRepo.AMDOrderComplete(request);
             }
             catch (Exception)
             {

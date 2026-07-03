@@ -40,5 +40,7 @@ namespace Domain
         public string? Top_Image_URL { get; set; }
         public string? Side_Image_URL { get; set; }
         public string? Back_Image_URL { get; set; }
+        public string? Mode { get; set; }
+        public string? Reorder_Type { get; set; }
     }
 }

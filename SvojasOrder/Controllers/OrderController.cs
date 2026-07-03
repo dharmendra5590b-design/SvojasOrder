@@ -54,9 +54,16 @@ namespace SvojasOrder.Controllers
                     Front_Image_URL = await SaveFile(dto.frontImage),
                     Top_Image_URL = await SaveFile(dto.topImage),
                     Side_Image_URL = await SaveFile(dto.sideImage),
-                    Back_Image_URL = await SaveFile(dto.backImage)
-                };
+                    Back_Image_URL = await SaveFile(dto.backImage),
+                    Mode=dto.Order_ID>0?"M":"A",                    
+                    Reorder_Type=dto.Reorder_Type,
 
+                };
+                order.Mode = dto.Mode == "R" ? dto.Mode : order.Mode;
+                order.Front_Image_URL = string.IsNullOrEmpty(order.Front_Image_URL) ? Utility.GetRelativePath(dto.Front_Image_URL) : order.Front_Image_URL;
+                order.Back_Image_URL = string.IsNullOrEmpty(order.Back_Image_URL) ? Utility.GetRelativePath(dto.Back_Image_URL) : order.Back_Image_URL;
+                order.Top_Image_URL = string.IsNullOrEmpty(order.Top_Image_URL) ? Utility.GetRelativePath(dto.Top_Image_URL) : order.Top_Image_URL;
+                order.Side_Image_URL = string.IsNullOrEmpty(order.Side_Image_URL) ? Utility.GetRelativePath(dto.Side_Image_URL) : order.Side_Image_URL;
                 responseDE = await _orderService.SaveOrder(order);
 
                 return responseDE;
@@ -409,6 +416,47 @@ namespace SvojasOrder.Controllers
                 responseDE.Message = "Something went wrong.";
                 responseDE.StatusCode = -1;
 
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> OrderAssignToProduction(OrderAssignToProductionDE requestDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {                
+                responseDE = await _orderService.OrderAssignToProduction(requestDE);
+
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
+
+                return responseDE;
+            }
+        }
+
+        [HttpPost]
+        public async Task<ResponseDE> OrderComplete(OrderCompleteDE requestDE)
+        {
+            ResponseDE responseDE = new ResponseDE();
+
+            try
+            {
+                responseDE = await _orderService.OrderComplete(requestDE);
+                return responseDE;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                responseDE.Message = "Something went wrong.";
+                responseDE.StatusCode = -1;
                 return responseDE;
             }
         }

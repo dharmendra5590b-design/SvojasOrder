@@ -24,6 +24,8 @@ namespace Domain
         public bool Is_Colour_Required { get; set; }
         public int? Colour_Stone_ID { get; set; }
         public string Colour_Stone { get; set; }
+        public string Quantity { get; set; }
+
 
         public bool Is_Certificate_Required { get; set; }
         public int? Cretificate_ID { get; set; }

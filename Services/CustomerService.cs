@@ -35,6 +35,10 @@ namespace Services
                         dataObj.Customer_Code = Convert.ToString(drrow["Customer_Code"]);
                         dataObj.Company_Name = Convert.ToString(drrow["Company_Name"]);
                         dataObj.Mobile_Number = Convert.ToString(drrow["Mobile_Number"]);
+                        if(dataTable.Columns.Contains("Password"))
+                        {
+                            dataObj.Password = Convert.ToString(drrow["Password"]);
+                        }
                     }
                     // dataObj.Amount_OpeningBalance = Convert.ToDecimal(drrow["Amount_OpeningBalance"]);
                     // dataObj.Gold_OpeningBalance = Convert.ToDecimal(drrow["Gold_OpeningBalance"]);

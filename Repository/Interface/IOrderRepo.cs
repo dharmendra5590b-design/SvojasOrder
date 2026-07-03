@@ -14,6 +14,8 @@ namespace Repository.Interface
         Task<ResponseDE> AMDOrderRequest(OrderRequestDE orderRequest);
         Task<ResponseDE> AMDCancelOrder(OrderCancelRequestDE orderCancelRequestDE);
         Task<ResponseDE> AMDOrderDesingUpload(OrderDesingUploadDE request);
+        Task<ResponseDE> AMDOrderAssignToProduction(OrderAssignToProductionDE request);
+        Task<ResponseDE> AMDOrderComplete(OrderCompleteDE request);
         Task<DataTable> GetOrder(OrderSearchDE orderSearchDE);
         Task<DataTable> GetOrderView(int OrderID);
         Task<DataTable> GetPendingDesingOrder();

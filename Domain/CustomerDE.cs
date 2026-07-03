@@ -22,6 +22,7 @@ namespace Domain
 
         public decimal Amount_OpeningBalance { get; set; }
 
+        public string Password { get; set; }
         public string Mode { get; set; } = "A";
         public string From_Date { get; set; }
         public string To_Date { get; set; }

@@ -29,5 +29,7 @@ namespace Services.Interface
         Task<ResponseDE> CreateReOrder(ReOrderDE request);
         Task<ResponseDE> OrderReworkDtl(OrderReworkDtlDE request);
         Task<ResponseDE> CustomerOrderConfirm(OrderConfirmDE request);
+        Task<ResponseDE> OrderAssignToProduction(OrderAssignToProductionDE request);
+        Task<ResponseDE> OrderComplete(OrderCompleteDE request);
     }
 }

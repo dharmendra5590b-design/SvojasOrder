@@ -171,7 +171,14 @@ namespace Repository
     {
         Value = (object?)orderRequest.Back_Image_URL ?? DBNull.Value
     },
-
+    new SqlParameter("@Reorder_Type", SqlDbType.VarChar, 100)
+    {
+        Value = (object?)orderRequest.Reorder_Type ?? DBNull.Value
+    },
+    new SqlParameter("@Mode", SqlDbType.VarChar, 10)
+    {
+        Value = (object?)orderRequest.Mode ?? DBNull.Value
+    },
     new SqlParameter("@Msg", SqlDbType.VarChar, 200)
     {
         Direction = ParameterDirection.Output
@@ -190,11 +197,11 @@ namespace Repository
                     objSqlParameter
                 );
 
-                responseDE.Message = objSqlParameter[25].Value?.ToString();
+                responseDE.Message = objSqlParameter[27].Value?.ToString();
 
                 responseDE.StatusCode =
-                    objSqlParameter[26].Value != DBNull.Value
-                    ? Convert.ToInt32(objSqlParameter[26].Value)
+                    objSqlParameter[28].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[28].Value)
                     : 0;
 
                 return responseDE;
@@ -537,10 +544,10 @@ namespace Repository
                     : request.Rework_Image_URL
             },
 
-            new SqlParameter("@User_ID", SqlDbType.Int)
-            {
-                Value = request.User_ID ?? (object)DBNull.Value
-            },
+            //new SqlParameter("@User_ID", SqlDbType.Int)
+            //{
+            //    Value = request.User_ID ?? (object)DBNull.Value
+            //},
 
             new SqlParameter("@Mode", SqlDbType.Char, 1)
             {
@@ -567,9 +574,9 @@ namespace Repository
 
                 return new ResponseDE
                 {
-                    Message = parameters[6].Value?.ToString(),
-                    StatusCode = parameters[7].Value != DBNull.Value
-                        ? Convert.ToInt32(parameters[7].Value)
+                    Message = parameters[5].Value?.ToString(),
+                    StatusCode = parameters[6].Value != DBNull.Value
+                        ? Convert.ToInt32(parameters[6].Value)
                         : 0
                 };
             }
@@ -625,6 +632,157 @@ namespace Repository
                     Message = parameters[3].Value?.ToString(),
                     StatusCode = parameters[4].Value != DBNull.Value
                         ? Convert.ToInt32(parameters[4].Value)
+                        : 0
+                };
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> AMDOrderAssignToProduction(OrderAssignToProductionDE request)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+            new SqlParameter("@Order_ID", SqlDbType.BigInt)
+            {
+                Value = request.Order_ID ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Production_Specification", SqlDbType.VarChar)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Production_Specification)
+                    ? DBNull.Value
+                    : request.Production_Specification
+            },
+
+            new SqlParameter("@Data_Entry_Operater_Dtl", SqlDbType.VarChar, 200)
+            {
+                Value = string.IsNullOrWhiteSpace(request.Data_Entry_Operater_Dtl)
+                    ? DBNull.Value
+                    : request.Data_Entry_Operater_Dtl
+            },
+
+            new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+            {
+                Direction = ParameterDirection.Output
+            },
+
+            new SqlParameter("@Status", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            }
+        };
+
+                await _sqlConnection.FunDataTable(
+                    "usp_UPDATE_Order_Assign_To_Production",
+                    CommandType.StoredProcedure,
+                    parameters);
+
+                return new ResponseDE
+                {
+                    Message = parameters[3].Value?.ToString(),
+                    StatusCode = parameters[4].Value != DBNull.Value
+                        ? Convert.ToInt32(parameters[4].Value)
+                        : 0
+                };
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<ResponseDE> AMDOrderComplete(OrderCompleteDE request)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+            new SqlParameter("@Order_ID", SqlDbType.Int)
+            {
+                Value = request.Order_ID ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Final_Gross_Weight", SqlDbType.Decimal)
+            {
+                Value = request.Final_Gross_Weight ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Final_Noof_Diamonds", SqlDbType.Int)
+            {
+                Value = request.Final_Noof_Diamonds ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Final_Diamond_Weight", SqlDbType.Decimal)
+            {
+                Value = request.Final_Diamond_Weight ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@NoOfColour_Stone", SqlDbType.Int)
+            {
+                Value = request.NoOfColour_Stone ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@ColourStone_Weight", SqlDbType.Decimal)
+            {
+                Value = request.ColourStone_Weight ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Others_NoOfColour_Stone", SqlDbType.Int)
+            {
+                Value = request.Others_NoOfColour_Stone ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Others_Colour_Stone_Weight", SqlDbType.Decimal)
+            {
+                Value = request.Others_Colour_Stone_Weight ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Final_Net_Weight", SqlDbType.Decimal)
+            {
+                Value = request.Final_Net_Weight ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Final_Amount", SqlDbType.Decimal)
+            {
+                Value = request.Final_Amount ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Final_Production_Cost", SqlDbType.Decimal)
+            {
+                Value = request.Final_Production_Cost ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Final_24KT_Gold_Weight", SqlDbType.Decimal)
+            {
+                Value = request.Final_24KT_Gold_Weight ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+            {
+                Direction = ParameterDirection.Output
+            },
+
+            new SqlParameter("@Status", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            }
+        };
+
+                await _sqlConnection.FunDataTable(
+                    "usp_UPDATE_Order_Complete",
+                    CommandType.StoredProcedure,
+                    parameters);
+
+                return new ResponseDE
+                {
+                    Message = parameters[12].Value?.ToString(),
+                    StatusCode = parameters[13].Value != DBNull.Value
+                        ? Convert.ToInt32(parameters[13].Value)
                         : 0
                 };
             }

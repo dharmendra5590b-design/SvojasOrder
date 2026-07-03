@@ -64,5 +64,16 @@ namespace Common
 
             return list;
         }
+
+        public static string? GetRelativePath(string? url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                return null;
+
+            return Uri.TryCreate(url, UriKind.Absolute, out var uri)
+                ? uri.AbsolutePath.TrimStart('/')
+                : url;
+        }
+
     }
 }
