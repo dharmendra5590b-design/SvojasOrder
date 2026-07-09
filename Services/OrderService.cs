@@ -209,7 +209,7 @@ namespace Services
                         Diamond_Quality = Convert.ToString(row["Diamond_Quality"]),
                         Diamond_Weight = row["Diamond_Weight"] == DBNull.Value ? null : Convert.ToString(row["Diamond_Weight"]),
 
-                        NoOf_Diamonds = row["NoOf_Diamonds"] == DBNull.Value ? null : Convert.ToInt32(row["NoOf_Diamonds"]),
+                        NoOf_Diamonds = row["NoOf_Diamonds"] == DBNull.Value ? null : Convert.ToString(row["NoOf_Diamonds"]),
 
                         Delivery_Date = row["Delivery_Date"] == DBNull.Value ? null : Convert.ToDateTime(row["Delivery_Date"]),
                         Specification = Convert.ToString(row["Specification"]),
@@ -232,10 +232,10 @@ namespace Services
                         Final_Noof_Diamonds = row["Final_Noof_Diamonds"] == DBNull.Value ? null : Convert.ToInt32(row["Final_Noof_Diamonds"]),
                         Final_Diamond_Weight = row["Final_Diamond_Weight"] == DBNull.Value ? null : Convert.ToString(row["Final_Diamond_Weight"]),
 
-                        NoOfColour_Stone = row["NoOfColour_Stone"] == DBNull.Value ? null : Convert.ToInt32(row["NoOfColour_Stone"]),
+                        NoOfColour_Stone = row["NoOfColour_Stone"] == DBNull.Value ? null : Convert.ToString(row["NoOfColour_Stone"]),
                         ColourStone_Weight = row["ColourStone_Weight"] == DBNull.Value ? null : Convert.ToString(row["ColourStone_Weight"]),
 
-                        Others_NoOfColour_Stone = row["Others_NoOfColour_Stone"] == DBNull.Value ? null : Convert.ToInt32(row["Others_NoOfColour_Stone"]),
+                        Others_NoOfColour_Stone = row["Others_NoOfColour_Stone"] == DBNull.Value ? null : Convert.ToString(row["Others_NoOfColour_Stone"]),
                         Others_Colour_Stone_Weight = row["Others_Colour_Stone_Weight"] == DBNull.Value ? null : Convert.ToString(row["Others_Colour_Stone_Weight"]),
 
                         Final_Net_Weight = row["Final_Net_Weight"] == DBNull.Value ? null : Convert.ToString(row["Final_Net_Weight"]),

@@ -10,7 +10,7 @@ namespace Domain
     {
         public int Order_ID { get; set; }
         public int User_ID { get; set; }
-        public int Cancel_Reason { get; set; }
+        public string Cancel_Reason { get; set; }
         public int Cancelation_Charge { get; set; }
 
     }

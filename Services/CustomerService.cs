@@ -35,7 +35,9 @@ namespace Services
                         dataObj.Customer_Code = Convert.ToString(drrow["Customer_Code"]);
                         dataObj.Company_Name = Convert.ToString(drrow["Company_Name"]);
                         dataObj.Mobile_Number = Convert.ToString(drrow["Mobile_Number"]);
-                        if(dataTable.Columns.Contains("Password"))
+                        dataObj.Amount_OpeningBalance = Convert.ToDecimal(drrow["Amount_OpeningBalance"]);
+                        dataObj.Gold_OpeningBalance = Convert.ToDecimal(drrow["Gold_OpeningBalance"]);
+                        if (dataTable.Columns.Contains("Password"))
                         {
                             dataObj.Password = Convert.ToString(drrow["Password"]);
                         }
@@ -95,11 +97,21 @@ namespace Services
                 foreach (DataRow drrow in dataTable.Rows)
                 {
                     EmployeeDE dataObj = new EmployeeDE();
-                    dataObj.Employee_ID = Convert.ToInt32(drrow["Employee_ID"]);
-                    dataObj.Employee_Name = Convert.ToString(drrow["Employee_Name"]);
-                    dataObj.Email_ID = Convert.ToString(drrow["Email_ID"]);
-                    dataObj.Mobile_Number = Convert.ToString(drrow["Mobile_Number"]);
-                    dataObj.Designation = Convert.ToString(drrow["Designation"]);
+                    if (employeeDE.Mode=="O")
+                    {
+                        dataObj.Employee_ID = Convert.ToInt32(drrow["Employee_ID"]);
+                        dataObj.Employee_Name = Convert.ToString(drrow["Employee_Name"]);
+                    }
+                    else
+                    {
+                        dataObj.Employee_ID = Convert.ToInt32(drrow["Employee_ID"]);
+                        dataObj.Employee_Name = Convert.ToString(drrow["Employee_Name"]);
+                        dataObj.Email_ID = Convert.ToString(drrow["Email_ID"]);
+                        dataObj.Mobile_Number = Convert.ToString(drrow["Mobile_Number"]);
+                        dataObj.Designation = Convert.ToString(drrow["Designation"]);
+                        dataObj.Password = Convert.ToString(drrow["Password"]);                        
+                    }
+
                     employeeDEs.Add(dataObj);
                 }
                 responseDE.StatusCode = 1;

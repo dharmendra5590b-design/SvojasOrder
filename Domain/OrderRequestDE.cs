@@ -12,7 +12,7 @@ namespace Domain
         public int? Customer_ID { get; set; }
         public int? Design_ID { get; set; }
         public int? Karat_ID { get; set; }
-        public int? Karat_Percent { get; set; }
+        public string? Karat_Percent { get; set; }
         public int? Design_Type_ID { get; set; }
         public int? Gold_Colour_ID { get; set; }
 

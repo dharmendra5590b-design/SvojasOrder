@@ -15,6 +15,7 @@ namespace Domain
         public string Designation { get; set; }
         public bool Is_Mapped { get; set; } = false;
         public string Mode { get; set; }
+        public string Password { get; set; } 
 
     }
 }

@@ -69,7 +69,7 @@ namespace Repository
         Value = (object?)orderRequest.Karat_ID ?? DBNull.Value
     },
 
-    new SqlParameter("@Karat_Percent", SqlDbType.Int)
+    new SqlParameter("@Karat_Percent", SqlDbType.VarChar)
     {
         Value = (object?)orderRequest.Karat_Percent ?? DBNull.Value
     },
@@ -814,19 +814,19 @@ namespace Repository
         Value = orderSearchDE.design_ID
     },
 
-    new SqlParameter("@Order_FromDT", SqlDbType.Int)
+    new SqlParameter("@Order_FromDT", SqlDbType.DateTime)
     {
         Value = orderSearchDE.order_FromDT
     },
 
-    new SqlParameter("@Order_ToDT", SqlDbType.Int)
+    new SqlParameter("@Order_ToDT", SqlDbType.DateTime)
     {
         Value =orderSearchDE.order_ToDT
     },
 
     new SqlParameter("@PageSize", SqlDbType.Int)
     {
-        Value = 200
+        Value = 500
     },
 
 

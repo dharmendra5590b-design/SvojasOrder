@@ -215,9 +215,9 @@ namespace Repository
                 {
                     Value = employeeDE.Employee_ID
                 },
-                new SqlParameter("@Mode", SqlDbType.Int)
+                new SqlParameter("@Mode", SqlDbType.VarChar)
                 {
-                    Value = employeeDE.Mode
+                    Value = employeeDE.Mode==null?"S":employeeDE.Mode
                 }};
 
                 dataTable = await _sqlConnection.FunDataTable(
@@ -513,6 +513,10 @@ namespace Repository
                 new SqlParameter("@ToDT", SqlDbType.VarChar)
                 {
                     Value = customerDE.To_Date
+                },
+                new SqlParameter("@Ledger_Type", SqlDbType.VarChar)
+                {
+                    Value = customerDE.Ledger_Type
                 }
                 };
 

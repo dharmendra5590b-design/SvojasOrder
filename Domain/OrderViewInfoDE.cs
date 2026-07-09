@@ -37,7 +37,7 @@ namespace Domain
         public string Diamond_Quality { get; set; }
         public string? Diamond_Weight { get; set; }
 
-        public int? NoOf_Diamonds { get; set; }
+        public string? NoOf_Diamonds { get; set; }
 
         public DateTime? Delivery_Date { get; set; }
         public string Specification { get; set; }
@@ -61,10 +61,10 @@ namespace Domain
         public int? Final_Noof_Diamonds { get; set; }
         public string? Final_Diamond_Weight { get; set; }
 
-        public int? NoOfColour_Stone { get; set; }
+        public string? NoOfColour_Stone { get; set; }
         public string? ColourStone_Weight { get; set; }
 
-        public int? Others_NoOfColour_Stone { get; set; }
+        public string? Others_NoOfColour_Stone { get; set; }
         public string? Others_Colour_Stone_Weight { get; set; }
 
         public string? Final_Net_Weight { get; set; }

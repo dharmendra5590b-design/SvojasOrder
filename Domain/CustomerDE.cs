@@ -26,5 +26,7 @@ namespace Domain
         public string Mode { get; set; } = "A";
         public string From_Date { get; set; }
         public string To_Date { get; set; }
+
+        public string Ledger_Type { get; set; }
     }
 }
