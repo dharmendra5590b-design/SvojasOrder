@@ -482,6 +482,21 @@ namespace SvojasOrder.Controllers
                 return responseDE;
             }
         }
+
+        [HttpGet]
+        public IActionResult Download(string fileName, string downloadFileName)
+        {
+            string uploadFolder = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot/"+ fileName);
+            if (!System.IO.File.Exists(uploadFolder))
+                return NotFound();
+
+            var stream = new FileStream(uploadFolder, FileMode.Open, FileAccess.Read);
+
+            return File(stream, "application/octet-stream", downloadFileName+ Path.GetExtension(fileName));
+        }
+
         private async Task<string?> SaveFile(IFormFile? file)
         {
             if (file == null || file.Length == 0)

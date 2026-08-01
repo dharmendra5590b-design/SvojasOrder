@@ -34,6 +34,7 @@ namespace Services
                         userEntityDE.Entity_ID = Convert.ToInt32(drrow["Entity_ID"]);
                         userEntityDE.User_Type = Convert.ToString(drrow["User_Type"]);
                         userEntityDE.User_ID = Convert.ToInt32(drrow["User_ID"]);
+                        userEntityDE.Is_Order_Available_For_Confirm = Convert.ToBoolean(drrow["Is_Order_Available_For_Confirm"]);
                     }
                 }
                 responseDE.data = userEntityDE;

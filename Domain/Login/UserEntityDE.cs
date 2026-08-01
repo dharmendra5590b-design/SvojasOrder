@@ -19,6 +19,7 @@ namespace Domain.Login
         public string Entity_Name { get; set; }
 
         public string token { get; set; }
+        public bool Is_Order_Available_For_Confirm { get; set; }
 
     }
 }

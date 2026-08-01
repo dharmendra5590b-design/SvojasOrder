@@ -398,21 +398,21 @@ namespace Repository
                 Value = request.Order_ID ?? (object)DBNull.Value
             },
 
-            new SqlParameter("@Designer_Weight", SqlDbType.VarChar, 50)
+            new SqlParameter("@Designer_Weight", SqlDbType.VarChar, 100)
             {
                 Value = string.IsNullOrWhiteSpace(request.Designer_Weight)
                     ? DBNull.Value
                     : request.Designer_Weight
             },
 
-            new SqlParameter("@Designer_Diamond_Weight", SqlDbType.VarChar, 50)
+            new SqlParameter("@Designer_Diamond_Weight", SqlDbType.VarChar, 100)
             {
                 Value = string.IsNullOrWhiteSpace(request.Designer_Diamond_Weight)
                     ? DBNull.Value
                     : request.Designer_Diamond_Weight
             },
 
-            new SqlParameter("@Designer_NoOf_Diamonds", SqlDbType.VarChar, 50)
+            new SqlParameter("@Designer_NoOf_Diamonds", SqlDbType.VarChar, 100)
             {
                 Value = string.IsNullOrWhiteSpace(request.Designer_NoOf_Diamonds)
                     ? DBNull.Value
@@ -734,12 +734,12 @@ namespace Repository
 
             new SqlParameter("@Others_NoOfColour_Stone", SqlDbType.Int)
             {
-                Value = request.Others_NoOfColour_Stone ?? (object)DBNull.Value
+                Value = request.Other_NoOfColour_Stone ?? (object)DBNull.Value
             },
 
             new SqlParameter("@Others_Colour_Stone_Weight", SqlDbType.Decimal)
             {
-                Value = request.Others_Colour_Stone_Weight ?? (object)DBNull.Value
+                Value = request.Other_Colour_Stone_Weight ?? (object)DBNull.Value
             },
 
             new SqlParameter("@Final_Net_Weight", SqlDbType.Decimal)
@@ -747,21 +747,32 @@ namespace Repository
                 Value = request.Final_Net_Weight ?? (object)DBNull.Value
             },
 
-            new SqlParameter("@Final_Amount", SqlDbType.Decimal)
-            {
-                Value = request.Final_Amount ?? (object)DBNull.Value
-            },
+            //new SqlParameter("@Final_Amount", SqlDbType.Decimal)
+            //{
+            //    Value = request.Final_Amount ?? (object)DBNull.Value
+            //},
 
             new SqlParameter("@Final_Production_Cost", SqlDbType.Decimal)
             {
-                Value = request.Final_Production_Cost ?? (object)DBNull.Value
+                Value = request.billAmount ?? (object)DBNull.Value
             },
 
             new SqlParameter("@Final_24KT_Gold_Weight", SqlDbType.Decimal)
             {
-                Value = request.Final_24KT_Gold_Weight ?? (object)DBNull.Value
+                Value = request.gold24ktWeight ?? (object)DBNull.Value
             },
-
+            new SqlParameter("@Gold_Loss", SqlDbType.Decimal)
+            {
+                Value = request.Gold_Loss ?? (object)DBNull.Value
+            },
+            new SqlParameter("@Labour_Charge", SqlDbType.Decimal)
+            {
+                Value = request.Labour_Charge ?? (object)DBNull.Value
+            },
+            new SqlParameter("@Gold_Loss_24kt", SqlDbType.Decimal)
+            {
+                Value = request.Gold_Loss_24kt ?? (object)DBNull.Value
+            },
             new SqlParameter("@Msg", SqlDbType.VarChar, 200)
             {
                 Direction = ParameterDirection.Output
@@ -780,9 +791,9 @@ namespace Repository
 
                 return new ResponseDE
                 {
-                    Message = parameters[12].Value?.ToString(),
-                    StatusCode = parameters[13].Value != DBNull.Value
-                        ? Convert.ToInt32(parameters[13].Value)
+                    Message = parameters[14].Value?.ToString(),
+                    StatusCode = parameters[15].Value != DBNull.Value
+                        ? Convert.ToInt32(parameters[15].Value)
                         : 0
                 };
             }

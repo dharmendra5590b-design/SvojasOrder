@@ -1,22 +1,31 @@
 ﻿using Common;
 using Domain;
+using MailKit.Security;
+using MimeKit;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using Repository.Interface;
 using Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Services
 {
     public class OrderService: IOrderService
     {
         public readonly IOrderRepo _orderRepo;
-        public OrderService(IOrderRepo orderRepo)
+        public readonly AppSetting _appSetting;
+        public OrderService(IOrderRepo orderRepo, AppSetting appSetting)
         {
             _orderRepo = orderRepo;
+            _appSetting = appSetting;
         }
 
         public async Task<OrderListDE> GetListCustomerOrder()
@@ -111,7 +120,7 @@ namespace Services
                         Gold_Colour_ID = dr.GetNullableInt("Gold_Colour_ID"),
 
                         Size = dr.GetString("Size"),
-                        Weight = dr.GetNullableDecimal("Weight"),
+                        Weight = dr.GetString("Weight"),
 
                         Stone_ID = dr.GetNullableInt("Stone_ID"),
 
@@ -123,8 +132,8 @@ namespace Services
                         Is_Certificate_Required = dr.GetBool("Is_Certificate_Required"),
                         Cretificate_ID = dr.GetNullableInt("Cretificate_ID"),
                         Diamond_Quality_ID = dr.GetNullableInt("Diamond_Quality_ID"),
-                        Diamond_Weight = dr.GetNullableDecimal("Diamond_Weight"),
-                        NoOf_Diamonds = dr.GetNullableInt("NoOf_Diamonds"),
+                        Diamond_Weight = dr.GetString("Diamond_Weight"),
+                        NoOf_Diamonds = dr.GetString("NoOf_Diamonds"),
 
                         Delivery_Date = dr.GetNullableDateTime("Delivery_Date"),
                         Specification = dr.GetString("Specification"),
@@ -158,7 +167,12 @@ namespace Services
                         Others_NoOfColour_Stone = dr.GetNullableInt("Others_NoOfColour_Stone"),
                         Others_Colour_Stone_Weight = dr.GetNullableDecimal("Others_Colour_Stone_Weight"),
 
-                        Final_Net_Weight = dr.GetNullableDecimal("Final_Net_Weight")
+                        Final_Net_Weight = dr.GetNullableDecimal("Final_Net_Weight"),
+                        Gold_Loss = dr.GetNullableDecimal("Gold_Loss"),
+                        Labour_Charge = dr.GetNullableDecimal("Labour_Charge"),
+                        Gold_Loss_24kt = dr.GetNullableDecimal("Gold_Loss_24kt"),
+                        Bill_Amount = dr.GetNullableDecimal("Bill_Amount"),
+                        Final_Gold_Weight_24kt = dr.GetNullableDecimal("Final_Gold_Weight_24kt"),
                     });
                 }
                 return orders;
@@ -686,5 +700,183 @@ namespace Services
                 throw;
             }
         }
+
+        public byte[] GenerateOrderTags(DataTable dt)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+
+            var document = QuestPDF.Fluent.Document.Create(container =>
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    container.Page(page =>
+                    {
+                        page.Size(PageSizes.A6.Landscape()); // tag-sized page; use A5/A4 if you want bigger
+                        page.Margin(15);
+                        page.DefaultTextStyle(x => x.FontSize(9).FontFamily("Arial"));
+
+                        page.Content().Border(1).Padding(6).Column(col =>
+                        {
+                            col.Spacing(2);
+
+                            // Row: ORDER DATE | DEL DATE
+                            col.Item().Row(r =>
+                            {
+                                r.RelativeItem().Text(t =>
+                                {
+                                    t.Span("ORDER DATE: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Order_Date"));
+                                });
+                                r.RelativeItem().Text(t =>
+                                {
+                                    t.Span("DEL DATE: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Delivery_Date"));
+                                });
+                            });
+
+                            col.Item().LineHorizontal(0.5f);
+
+                            // Row: CUST | KT | COL
+                            col.Item().Row(r =>
+                            {
+                                r.RelativeItem(2).Text(t =>
+                                {
+                                    t.Span("CUST: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Customer_Name")).FontSize(11);
+                                });
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("KT: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Karat"));
+                                });
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("COL: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Gold_Colour"));
+                                });
+                            });
+
+                            col.Item().LineHorizontal(0.5f);
+
+                            // Row: BAG NO | QTY | SIZE
+                            col.Item().Row(r =>
+                            {
+                                r.RelativeItem(2).Text(t =>
+                                {
+                                    t.Span("BAG NO: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Bag_No")).FontSize(12); // map to actual bag no column if present
+                                });
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("QTY: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Quantity"));
+                                });
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("SIZE: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Size"));
+                                });
+                            });
+
+                            col.Item().LineHorizontal(0.5f);
+
+                            // Row: DESIGN | DIA PCS | DIA WT
+                            col.Item().Row(r =>
+                            {
+                                r.RelativeItem(2).Column(c =>
+                                {
+                                    c.Item().Text("DESIGN:").SemiBold();
+                                    c.Item().Text(Utility.GetVal(row, "Design")).FontSize(14).Bold();
+                                });
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("DIA PCS: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Designer_NoOf_Diamonds"));
+                                });
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("DIA WT: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Designer_Diamond_Weight"));
+                                });
+                            });
+
+                            // Row: (blank) | COL PCS | COL WT
+                            col.Item().Row(r =>
+                            {
+                                r.RelativeItem(2).Text("");
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("COL PCS: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Colour_Stone_Name"));
+                                });
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("COL WT: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Colour_Stone_Weight")); // map if you have this column
+                                });
+                            });
+
+                            col.Item().LineHorizontal(0.5f);
+
+                            // Row: CAST WT | ORDER WT | FG
+                            col.Item().Row(r =>
+                            {
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("CAST WT: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Designer_Weight"));
+                                });
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("ORDER WT: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Order_Weight")); // map if present
+                                });
+                                r.RelativeItem(1).Text(t =>
+                                {
+                                    t.Span("FG: ").SemiBold();
+                                    t.Span(Utility.GetVal(row, "Finished_Weight")); // map if present
+                                });
+                            });
+
+                            col.Item().LineHorizontal(0.5f);
+
+                            // Row: COMMENTS
+                            col.Item().Text(t =>
+                            {
+                                t.Span("COMMENTS: ").SemiBold();
+                                t.Span(Utility.GetVal(row, "Production_Specification"));
+                            });
+                        });
+                    });
+                }
+            });
+
+            return document.GeneratePdf();
+        }
+
+        private async Task SendOrderPdfAsync(string toEmail, string customerName, string orderNumber, byte[] pdfBytes)
+        {
+            var message = new MimeMessage();
+            message.From.Add(MailboxAddress.Parse(_appSetting.FromEmail));
+            message.To.Add(MailboxAddress.Parse(toEmail));
+            message.Subject = $"Order Details - {orderNumber}";
+
+            var builder = new BodyBuilder
+            {
+                HtmlBody = $@"<p>Dear {customerName},</p>
+                          <p>Please find attached the order details for Order No. <b>{orderNumber}</b>.</p>
+                          <p>Regards,<br/>Team</p>"
+            };
+            builder.Attachments.Add($"Order_{orderNumber}.pdf", pdfBytes, new MimeKit.ContentType("application", "pdf"));
+            message.Body = builder.ToMessageBody();
+
+            using var client = new MailKit.Net.Smtp.SmtpClient();
+            await client.ConnectAsync(_appSetting.Host, _appSetting.Port, SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync(_appSetting.Username,_appSetting.Password);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
+
+
     }
 }

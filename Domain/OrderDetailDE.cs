@@ -18,7 +18,7 @@ namespace Domain
         public int? Design_Type_ID { get; set; }
         public int? Gold_Colour_ID { get; set; }
         public string Size { get; set; }
-        public decimal? Weight { get; set; }
+        public string Weight { get; set; }
 
         public int? Stone_ID { get; set; }
         public bool Is_Colour_Required { get; set; }
@@ -30,8 +30,8 @@ namespace Domain
         public bool Is_Certificate_Required { get; set; }
         public int? Cretificate_ID { get; set; }
         public int? Diamond_Quality_ID { get; set; }
-        public decimal? Diamond_Weight { get; set; }
-        public int? NoOf_Diamonds { get; set; }
+        public string Diamond_Weight { get; set; }
+        public string NoOf_Diamonds { get; set; }
 
         public DateTime? Delivery_Date { get; set; }
         public string Specification { get; set; }
@@ -66,5 +66,10 @@ namespace Domain
         public decimal? Others_Colour_Stone_Weight { get; set; }
 
         public decimal? Final_Net_Weight { get; set; }
+        public decimal? Gold_Loss { get; set; }
+        public decimal? Labour_Charge { get; set; }
+        public decimal? Gold_Loss_24kt { get; set; }
+        public decimal? Bill_Amount { get; set; }
+        public decimal? Final_Gold_Weight_24kt { get; set; }
     }
 }

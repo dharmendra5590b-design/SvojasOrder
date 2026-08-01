@@ -30,6 +30,7 @@ namespace SvojasOrder.Extensions
             Services.AddScoped<IOrderRepo, OrderRepo>();
             //Create singleton from instance
 
+            Services.AddSingleton(Configuration.GetSection("Smtp").Get<AppSetting>());
             Services.AddHttpContextAccessor();
         }
     }

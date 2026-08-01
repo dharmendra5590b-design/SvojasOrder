@@ -13,6 +13,7 @@ namespace Domain
         public string? Admin_Specification { get; set; }
         public bool? Is_High_Priority { get; set; }
         public DateTime? Design_Expected_DT { get; set; }
+        public DateTime? Committed_DT { get; set; }
 
     }
 }

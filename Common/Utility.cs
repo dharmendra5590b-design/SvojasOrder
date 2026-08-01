@@ -74,6 +74,15 @@ namespace Common
                 ? uri.AbsolutePath.TrimStart('/')
                 : url;
         }
+        public static string GetVal(DataRow row, string colName)
+        {
+            if (!row.Table.Columns.Contains(colName)) return "";
+            var val = row[colName];
+            if (val == null || val == DBNull.Value) return "";
+            if (val is DateTime dt) return dt.ToString("dd-MM-yyyy");
+            return val.ToString();
+        }
+
 
     }
 }
