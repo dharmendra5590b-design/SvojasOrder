@@ -18,6 +18,8 @@ namespace Repository.Interface
         Task<ResponseDE> AMDOrderComplete(OrderCompleteDE request);
         Task<DataTable> GetOrder(OrderSearchDE orderSearchDE);
         Task<DataTable> GetOrderView(int OrderID);
+        Task<DataTable> GetOrderPrint(int OrderID);
+        Task<DataSet> GetOrderEmail(int OrderID);
         Task<DataTable> GetPendingDesingOrder();
         Task<DataTable> GetDesingOrder(int DesignerID);
         Task<DataTable> GetOperator(int OrderID);

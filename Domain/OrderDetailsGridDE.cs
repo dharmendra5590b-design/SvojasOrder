@@ -31,6 +31,9 @@ namespace Domain
 
         public string Is_OrderCompleted { get; set; }
         public string Order_Completed_DT { get; set; }
+        public string Status { get; set; }
+
+        public string Committed_DT { get; set; }
 
     }
 }

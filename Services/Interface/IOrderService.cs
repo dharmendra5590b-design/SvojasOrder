@@ -15,6 +15,7 @@ namespace Services.Interface
         Task<List<OrderDetailDE>> GetOrderDetail(OrderSearchDE orderSearchDE);
         Task<List<OrderDetailsGridDE>> GetGridOrder(OrderSearchDE orderSearchDE);
         Task<List<OrderViewInfoDE>> GetOrderView(int OrderID);
+        Task<List<OrderPrintReportDE>> GetOrderPrint(int OrderID);
         Task<List<EmployeeDE>> GetOperator(int OrderID);
         Task<List<OrderDesignInfoDE>> GetPendingDesingOrder();
         Task<List<OrderDesignInfoDE>> GetDesingOrder(int DesignerID);

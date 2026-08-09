@@ -167,6 +167,22 @@ namespace SvojasOrder.Controllers
         }
 
         [HttpGet]
+        public async Task<List<OrderPrintReportDE>> GetOrderPrint(int OrderID)
+        {
+            List<OrderPrintReportDE> dataObj = new List<OrderPrintReportDE>();
+            try
+            {
+                dataObj = await _orderService.GetOrderPrint(OrderID);
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+        [HttpGet]
         public async Task<List<OrderDesignInfoDE>> GetPendingDesingOrder()
         {
             List<OrderDesignInfoDE> dataObj = new List<OrderDesignInfoDE>();

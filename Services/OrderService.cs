@@ -84,7 +84,9 @@ namespace Services
                         Production_Assigned_DT = dr["Assigned_To_Production"]?.ToString(),
 
                         //Is_OrderCompleted = dr["Is_OrderCompleted"]?.ToString(),
-                        Order_Completed_DT = dr["Order_Completed"]?.ToString()
+                        Order_Completed_DT = dr["Order_Completed"]?.ToString(),
+                        Status=dr["status"]?.ToString(),
+                        Committed_DT = dr["Committed_Date"]?.ToString(),
                     });
                 }
                 return orders;
@@ -173,6 +175,14 @@ namespace Services
                         Gold_Loss_24kt = dr.GetNullableDecimal("Gold_Loss_24kt"),
                         Bill_Amount = dr.GetNullableDecimal("Bill_Amount"),
                         Final_Gold_Weight_24kt = dr.GetNullableDecimal("Final_Gold_Weight_24kt"),
+                        Diamond_Value = dr.GetNullableDecimal("Diamond_Value"),
+                        Colour_Stone_Value = dr.GetNullableDecimal("ColourStone_Value"),
+                        Other_Colour_Stone_Value = dr.GetNullableDecimal("Other_Colour_Stone_Value"),
+                        Certificate_Charge = dr.GetNullableDecimal("Certificate_Charge"),
+                        Other_Charges = dr.GetNullableDecimal("Other_Charges"),
+                        Final_Net_Weight_24kt = dr.GetNullableDecimal("Final_Net_Weight_24kt"),
+
+
                     });
                 }
                 return orders;
@@ -226,6 +236,8 @@ namespace Services
                         NoOf_Diamonds = row["NoOf_Diamonds"] == DBNull.Value ? null : Convert.ToString(row["NoOf_Diamonds"]),
 
                         Delivery_Date = row["Delivery_Date"] == DBNull.Value ? null : Convert.ToDateTime(row["Delivery_Date"]),
+                        Committed_Date = row["Committed_DT"] == DBNull.Value ? null : Convert.ToDateTime(row["Committed_DT"]),
+
                         Specification = Convert.ToString(row["Specification"]),
 
                         Front_Image_URL = Convert.ToString(row["Front_Image_URL"]),
@@ -251,14 +263,88 @@ namespace Services
 
                         Others_NoOfColour_Stone = row["Others_NoOfColour_Stone"] == DBNull.Value ? null : Convert.ToString(row["Others_NoOfColour_Stone"]),
                         Others_Colour_Stone_Weight = row["Others_Colour_Stone_Weight"] == DBNull.Value ? null : Convert.ToString(row["Others_Colour_Stone_Weight"]),
-
                         Final_Net_Weight = row["Final_Net_Weight"] == DBNull.Value ? null : Convert.ToString(row["Final_Net_Weight"]),
+
+                        Diamond_Value = row["Diamond_Value"] == DBNull.Value ? null : Convert.ToString(row["Diamond_Value"]),
+
+                        Colour_Stone_Value = row["ColourStone_Value"] == DBNull.Value ? null : Convert.ToString(row["ColourStone_Value"]),
+
+                        Other_Colour_Stone_Value = row["Other_Colour_Stone_Value"] == DBNull.Value ? null : Convert.ToString(row["Other_Colour_Stone_Value"]),
+
+                        Final_Net_Weight_24kt = row["Final_Net_Weight_24kt"] == DBNull.Value ? null : Convert.ToString(row["Final_Net_Weight_24kt"]),
+
+                        Certificate_Charge = row["Certificate_Charge"] == DBNull.Value ? null : Convert.ToString(row["Certificate_Charge"]),
+
+                        Other_Charges = row["Other_Charges"] == DBNull.Value ? null : Convert.ToString(row["Other_Charges"]),
+
                         Order_Status = row["Current_Order_Status"] == DBNull.Value ? null : Convert.ToString(row["Current_Order_Status"]),
                         adminSpecification = row["Current_Order_Status"] == DBNull.Value ? null : Convert.ToString(row["Admin_Specification"])
                     });
 
                 };
                 
+                return orders;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<List<OrderPrintReportDE>> GetOrderPrint(int OrderID)
+        {
+            try
+            {
+                DataTable dataTable = await _orderRepo.GetOrderPrint(OrderID);
+                List<OrderPrintReportDE> orders = new List<OrderPrintReportDE>();
+
+                foreach (DataRow dr in dataTable.Rows)
+                {
+                    orders.Add(new OrderPrintReportDE
+                    {
+                        Order_Number = dr["Order_Number"]?.ToString(),
+                        Order_DT = dr["Order_DT"]?.ToString(),
+                        Customer_Name = dr["Customer_Name"]?.ToString(),
+                        Design = dr["Design"]?.ToString(),
+                        Quantity = dr.GetNullableInt("Quantity"),
+                        Karat = dr["Karat"]?.ToString(),
+                        Design_Type = dr["Design_Type"]?.ToString(),
+                        Gold_Colour = dr["Gold_Colour"]?.ToString(),
+                        Size = dr["Size"]?.ToString(),
+                        Stone_Name = dr["Stone_Name"]?.ToString(),
+                        Diamond_Quality = dr["Diamond_Quality"]?.ToString(),
+                        Cretificate_Name = dr["Cretificate_Name"]?.ToString(),
+                        Colour_Stone_Name = dr["Colour_Stone_Name"]?.ToString(),
+                        Order_Complete_DT = dr["Order_Complete_DT"]?.ToString(),
+
+                        Final_Gross_Weight = dr.GetNullableDecimal("Final_Gross_Weight"),
+                        Final_Noof_Diamonds = dr.GetNullableInt("Final_Noof_Diamonds"),
+                        Final_Diamond_Weight = dr.GetNullableDecimal("Final_Diamond_Weight"),
+                        Diamond_Value = dr.GetNullableDecimal("Diamond_Value"),
+
+                        NoOfColour_Stone = dr.GetNullableInt("NoOfColour_Stone"),
+                        ColourStone_Weight = dr.GetNullableDecimal("ColourStone_Weight"),
+                        ColourStone_Value = dr.GetNullableDecimal("ColourStone_Value"),
+
+                        Others_NoOfColour_Stone = dr.GetNullableInt("Others_NoOfColour_Stone"),
+                        Others_Colour_Stone_Weight = dr.GetNullableDecimal("Others_Colour_Stone_Weight"),
+                        Other_Colour_Stone_Value = dr.GetNullableDecimal("Other_Colour_Stone_Value"),
+
+                        Final_Net_Weight = dr.GetNullableDecimal("Final_Net_Weight"),
+                        Final_Net_Weight_24kt = dr.GetNullableDecimal("Final_Net_Weight_24kt"),
+                        Gold_Loss = dr.GetNullableDecimal("Gold_Loss"),
+                        Labour_Charge = dr.GetNullableDecimal("Labour_Charge"),
+                        Gold_Loss_24kt = dr.GetNullableDecimal("Gold_Loss_24kt"),
+                        Certificate_Charge = dr.GetNullableDecimal("Certificate_Charge"),
+                        Other_Charges = dr.GetNullableDecimal("Other_Charges"),
+
+                        Bill_Amount = dr.GetNullableDecimal("Bill_Amount"),
+                        Final_Gold_Weight_24kt = dr.GetNullableDecimal("Final_Gold_Weight_24kt"),
+
+                        CAD_Image_URL = dr["CAD_Image_URL"]?.ToString()
+                    });
+                }
                 return orders;
             }
             catch (Exception)
@@ -678,13 +764,32 @@ namespace Services
             try
             {
 
-                return await _orderRepo.AMDOrderAssignToProduction(request);
+                ResponseDE responseDE= await _orderRepo.AMDOrderAssignToProduction(request);
+                if (responseDE.StatusCode == 1)
+                {
+                    try
+                    {
+                        DataSet dataSet = await _orderRepo.GetOrderEmail((int)request.Order_ID);
+                        OrderPdfService orderPdfService = new OrderPdfService();
+                        orderPdfService._appSetting = _appSetting;
+                        await orderPdfService.SendOrderEmailAsync(dataSet, dataSet.Tables[2].Rows[0]["Email_ID"].ToString());
+                    }
+                    catch (Exception ex)
+                    {
+
+                        ErrorLog.WriteLogFile(ex);
+                    }
+
+
+                }
+                return responseDE;
             }
             catch (Exception)
             {
 
                 throw;
             }
+           
         }
 
         public async Task<ResponseDE> OrderComplete(OrderCompleteDE request)
@@ -692,7 +797,9 @@ namespace Services
             try
             {
 
-                return await _orderRepo.AMDOrderComplete(request);
+                ResponseDE responseDE= await _orderRepo.AMDOrderComplete(request);
+                
+                return responseDE;
             }
             catch (Exception)
             {

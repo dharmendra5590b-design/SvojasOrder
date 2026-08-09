@@ -71,5 +71,11 @@ namespace Domain
         public decimal? Gold_Loss_24kt { get; set; }
         public decimal? Bill_Amount { get; set; }
         public decimal? Final_Gold_Weight_24kt { get; set; }
+        public decimal? Diamond_Value { get; set; }
+        public decimal? Colour_Stone_Value { get; set; }
+        public decimal? Other_Colour_Stone_Value { get; set; }
+        public decimal? Final_Net_Weight_24kt { get; set; }
+        public decimal? Certificate_Charge { get; set; }
+        public decimal? Other_Charges { get; set; }
     }
 }

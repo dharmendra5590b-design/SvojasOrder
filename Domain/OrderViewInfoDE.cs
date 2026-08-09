@@ -40,6 +40,7 @@ namespace Domain
         public string? NoOf_Diamonds { get; set; }
 
         public DateTime? Delivery_Date { get; set; }
+        public DateTime? Committed_Date { get; set; }
         public string Specification { get; set; }
 
         public string Front_Image_URL { get; set; }
@@ -68,6 +69,13 @@ namespace Domain
         public string? Others_Colour_Stone_Weight { get; set; }
 
         public string? Final_Net_Weight { get; set; }
+        public string? Diamond_Value { get; set; }
+        public string? Colour_Stone_Value { get; set; }
+        public string? Other_Colour_Stone_Value { get; set; }
+        public string? Final_Net_Weight_24kt { get; set; }
+        public string? Certificate_Charge { get; set; }
+        public string? Other_Charges { get; set; }
+
 
         public string Order_Status { get; set; }
         public string adminSpecification { get; set; }

@@ -304,7 +304,10 @@ namespace Repository
             {
                 Value = (object?)request.Design_Expected_DT ?? DBNull.Value
             },
-
+            new SqlParameter("@Committed_DT", SqlDbType.Date)
+            {
+                Value = (object?)request.Committed_DT ?? DBNull.Value
+            },
             new SqlParameter("@Msg", SqlDbType.VarChar, 200)
             {
                 Direction = ParameterDirection.Output
@@ -322,11 +325,11 @@ namespace Repository
                     objSqlParameter
                 );
 
-                responseDE.Message = objSqlParameter[5].Value?.ToString();
+                responseDE.Message = objSqlParameter[6].Value?.ToString();
 
                 responseDE.StatusCode =
-                    objSqlParameter[6].Value != DBNull.Value
-                    ? Convert.ToInt32(objSqlParameter[6].Value)
+                    objSqlParameter[7].Value != DBNull.Value
+                    ? Convert.ToInt32(objSqlParameter[7].Value)
                     : 0;
 
                 return responseDE;
@@ -700,6 +703,16 @@ namespace Repository
         {
             try
             {
+                var msgParam = new SqlParameter("@Msg", SqlDbType.VarChar, 200)
+                {
+                    Direction = ParameterDirection.Output
+                };
+
+                var statusParam = new SqlParameter("@Status", SqlDbType.Int)
+                {
+                    Direction = ParameterDirection.Output
+                };
+
                 SqlParameter[] parameters =
                 {
             new SqlParameter("@Order_ID", SqlDbType.Int)
@@ -707,8 +720,15 @@ namespace Repository
                 Value = request.Order_ID ?? (object)DBNull.Value
             },
 
+            new SqlParameter("@Production_KT", SqlDbType.Int)
+            {
+                Value = request.Production_KT ?? (object)DBNull.Value
+            },
+
             new SqlParameter("@Final_Gross_Weight", SqlDbType.Decimal)
             {
+                Precision = 18,
+                Scale = 3,
                 Value = request.Final_Gross_Weight ?? (object)DBNull.Value
             },
 
@@ -719,7 +739,16 @@ namespace Repository
 
             new SqlParameter("@Final_Diamond_Weight", SqlDbType.Decimal)
             {
+                Precision = 18,
+                Scale = 3,
                 Value = request.Final_Diamond_Weight ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Diamond_Value", SqlDbType.Decimal)
+            {
+                Precision = 18,
+                Scale = 2,
+                Value = request.Diamond_Value ?? (object)DBNull.Value
             },
 
             new SqlParameter("@NoOfColour_Stone", SqlDbType.Int)
@@ -729,7 +758,16 @@ namespace Repository
 
             new SqlParameter("@ColourStone_Weight", SqlDbType.Decimal)
             {
+                Precision = 18,
+                Scale = 3,
                 Value = request.ColourStone_Weight ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@ColourStone_Value", SqlDbType.Decimal)
+            {
+                Precision = 18,
+                Scale = 2,
+                Value = request.Colour_Stone_Value ?? (object)DBNull.Value
             },
 
             new SqlParameter("@Others_NoOfColour_Stone", SqlDbType.Int)
@@ -739,49 +777,83 @@ namespace Repository
 
             new SqlParameter("@Others_Colour_Stone_Weight", SqlDbType.Decimal)
             {
+                Precision = 18,
+                Scale = 3,
                 Value = request.Other_Colour_Stone_Weight ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Other_Colour_Stone_Value", SqlDbType.Decimal)
+            {
+                Precision = 18,
+                Scale = 2,
+                Value = request.Other_Colour_Stone_Value ?? (object)DBNull.Value
             },
 
             new SqlParameter("@Final_Net_Weight", SqlDbType.Decimal)
             {
+                Precision = 18,
+                Scale = 3,
                 Value = request.Final_Net_Weight ?? (object)DBNull.Value
             },
 
-            //new SqlParameter("@Final_Amount", SqlDbType.Decimal)
-            //{
-            //    Value = request.Final_Amount ?? (object)DBNull.Value
-            //},
+            new SqlParameter("@Final_Net_Weight_24kt", SqlDbType.Decimal)
+            {
+                Precision = 18,
+                Scale = 3,
+                Value = request.Final_Net_Weight_24kt ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Gold_Loss", SqlDbType.Decimal)
+            {
+                Precision = 18,
+                Scale = 3,
+                Value = request.Gold_Loss ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Labour_Charge", SqlDbType.Decimal)
+            {
+                Precision = 18,
+                Scale = 2,
+                Value = request.Labour_Charge ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Gold_Loss_24kt", SqlDbType.Decimal)
+            {
+                Precision = 18,
+                Scale = 3,
+                Value = request.Gold_Loss_24kt ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Certificate_Charge", SqlDbType.Decimal)
+            {
+                Precision = 18,
+                Scale = 2,
+                Value = request.Certificate_Charge ?? (object)DBNull.Value
+            },
+
+            new SqlParameter("@Other_Charges", SqlDbType.Decimal)
+            {
+                Precision = 18,
+                Scale = 2,
+                Value = request.Other_Charges ?? (object)DBNull.Value
+            },
 
             new SqlParameter("@Final_Production_Cost", SqlDbType.Decimal)
             {
+                Precision = 18,
+                Scale = 3,
                 Value = request.billAmount ?? (object)DBNull.Value
             },
 
             new SqlParameter("@Final_24KT_Gold_Weight", SqlDbType.Decimal)
             {
+                Precision = 18,
+                Scale = 3,
                 Value = request.gold24ktWeight ?? (object)DBNull.Value
             },
-            new SqlParameter("@Gold_Loss", SqlDbType.Decimal)
-            {
-                Value = request.Gold_Loss ?? (object)DBNull.Value
-            },
-            new SqlParameter("@Labour_Charge", SqlDbType.Decimal)
-            {
-                Value = request.Labour_Charge ?? (object)DBNull.Value
-            },
-            new SqlParameter("@Gold_Loss_24kt", SqlDbType.Decimal)
-            {
-                Value = request.Gold_Loss_24kt ?? (object)DBNull.Value
-            },
-            new SqlParameter("@Msg", SqlDbType.VarChar, 200)
-            {
-                Direction = ParameterDirection.Output
-            },
 
-            new SqlParameter("@Status", SqlDbType.Int)
-            {
-                Direction = ParameterDirection.Output
-            }
+            msgParam,
+            statusParam
         };
 
                 await _sqlConnection.FunDataTable(
@@ -791,9 +863,9 @@ namespace Repository
 
                 return new ResponseDE
                 {
-                    Message = parameters[14].Value?.ToString(),
-                    StatusCode = parameters[15].Value != DBNull.Value
-                        ? Convert.ToInt32(parameters[15].Value)
+                    Message = msgParam.Value?.ToString(),
+                    StatusCode = statusParam.Value != DBNull.Value
+                        ? Convert.ToInt32(statusParam.Value)
                         : 0
                 };
             }
@@ -834,7 +906,10 @@ namespace Repository
     {
         Value =orderSearchDE.order_ToDT
     },
-
+     new SqlParameter("@Order_Status", SqlDbType.VarChar)
+    {
+        Value =orderSearchDE.Status
+    },
     new SqlParameter("@PageSize", SqlDbType.Int)
     {
         Value = 500
@@ -886,6 +961,66 @@ namespace Repository
 
 
                 return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataTable> GetOrderPrint(int OrderID)
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+             {
+                new SqlParameter("@Order_ID", SqlDbType.Int)
+                {
+                    Value = OrderID
+                }
+             };
+
+
+                            dataTable = await _sqlConnection.FunDataTable(
+                                "usp_GET_Order_For_Print",
+                                CommandType.StoredProcedure,
+                                objSqlParameter
+                            );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataSet> GetOrderEmail(int OrderID)
+        {
+            DataSet dataSet = new DataSet();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+             {
+                new SqlParameter("@Order_ID", SqlDbType.Int)
+                {
+                    Value = OrderID
+                }
+             };
+
+
+                dataSet = await _sqlConnection.FunDataSet(
+                    "usp_GET_Order_For_Email",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+
+                return dataSet;
             }
             catch (Exception)
             {

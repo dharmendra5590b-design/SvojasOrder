@@ -18,5 +18,6 @@ namespace Domain
 
         public int? customer_ID { get; set; }
         public string mode { get; set; }
+        public string Status { get; set; }
     }
 }
