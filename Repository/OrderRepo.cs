@@ -938,9 +938,9 @@ namespace Repository
             }
         }
 
-        public async Task<DataTable> GetOrderView(int OrderID)
+        public async Task<DataSet> GetOrderView(int OrderID)
         {
-            DataTable dataTable = new DataTable();
+            DataSet dataSet = new DataSet();
 
             try
             {
@@ -953,14 +953,14 @@ namespace Repository
  };
 
 
-                dataTable = await _sqlConnection.FunDataTable(
+                dataSet = await _sqlConnection.FunDataSet(
                     "usp_GET_Order_For_View",
                     CommandType.StoredProcedure,
                     objSqlParameter
                 );
 
 
-                return dataTable;
+                return dataSet;
             }
             catch (Exception)
             {
@@ -991,6 +991,36 @@ namespace Repository
 
 
                 return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<DataSet> GetDesginerPrint(int OrderID)
+        {
+            DataSet dataSet = new DataSet();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+             {
+                new SqlParameter("@Order_ID", SqlDbType.Int)
+                {
+                    Value = OrderID
+                }
+             };
+
+
+                dataSet = await _sqlConnection.FunDataSet(
+                    "usp_GET_Order_For_DesignerPrint",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+
+                return dataSet;
             }
             catch (Exception)
             {
@@ -1078,6 +1108,41 @@ namespace Repository
             }
         }
 
+        public async Task<DataTable> GetDesingerOrderReport(int DesignerID)
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+                     {
+                        new SqlParameter("@Designer_ID", SqlDbType.Int)
+                        {
+                            Value = DesignerID
+                        },
+
+                        new SqlParameter("@PageSize", SqlDbType.Int)
+                        {
+                            Value = 500
+                        }
+                     };
+
+
+                dataTable = await _sqlConnection.FunDataTable(
+                    "usp_GET_Order_For_Designer",
+                    CommandType.StoredProcedure,
+                    objSqlParameter
+                );
+
+
+                return dataTable;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<DataTable> GetOperator(int OrderID)
         {
             DataTable dataTable = new DataTable();
@@ -1148,16 +1213,23 @@ namespace Repository
             }
         }
 
-        public async Task<DataTable> GetPendingOrderConfirmation()
+        public async Task<DataTable> GetPendingOrderConfirmation(int? customerID)
         {
             DataTable dataTable = new DataTable();
 
             try
             {
+                SqlParameter[] objSqlParameter = new SqlParameter[]
+{
+   new SqlParameter("@Customer_ID", SqlDbType.Int)
+    {
+        Value = customerID
+    },
 
+};
                 dataTable = await _sqlConnection.FunDataTable(
                     "usp_Get_Pending_Order_Confirmation",
-                    CommandType.StoredProcedure
+                    CommandType.StoredProcedure, objSqlParameter
                 );
 
 

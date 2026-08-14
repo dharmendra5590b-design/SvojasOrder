@@ -79,5 +79,7 @@ namespace Domain
 
         public string Order_Status { get; set; }
         public string adminSpecification { get; set; }
+
+        public List<string> ReworkSpecificationList { get; set; }
     }
 }

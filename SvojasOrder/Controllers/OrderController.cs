@@ -183,6 +183,23 @@ namespace SvojasOrder.Controllers
         }
 
         [HttpGet]
+        public async Task<List<DesignerPrintDE>> GetDesignerPrint(int OrderID)
+        {
+            List<DesignerPrintDE> dataObj = new List<DesignerPrintDE>();
+            try
+            {
+                dataObj = await _orderService.GetDesginerPrint(OrderID);
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+
+        [HttpGet]
         public async Task<List<OrderDesignInfoDE>> GetPendingDesingOrder()
         {
             List<OrderDesignInfoDE> dataObj = new List<OrderDesignInfoDE>();
@@ -205,6 +222,22 @@ namespace SvojasOrder.Controllers
             try
             {
                 dataObj = await _orderService.GetDesingOrder(DesignerID);
+                return dataObj;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.WriteLogFile(ex);
+                return dataObj;
+            }
+        }
+
+        [HttpGet]
+        public async Task<List<OrderDesignInfoDE>> GetDesingerOrderReport(int DesignerID)
+        {
+            List<OrderDesignInfoDE> dataObj = new List<OrderDesignInfoDE>();
+            try
+            {
+                dataObj = await _orderService.GetDesingerOrderReport(DesignerID);
                 return dataObj;
             }
             catch (Exception ex)
@@ -247,12 +280,12 @@ namespace SvojasOrder.Controllers
         }
 
         [HttpGet]
-        public async Task<List<OrderPendingConfirmationInfoDE>> GetPendingOrderConfirmation()
+        public async Task<List<OrderPendingConfirmationInfoDE>> GetPendingOrderConfirmation(int? customerID)
         {
             List<OrderPendingConfirmationInfoDE> dataObj = new List<OrderPendingConfirmationInfoDE>();
             try
             {
-                dataObj = await _orderService.GetPendingOrderConfirmation();
+                dataObj = await _orderService.GetPendingOrderConfirmation(customerID);
                 return dataObj;
             }
             catch (Exception ex)

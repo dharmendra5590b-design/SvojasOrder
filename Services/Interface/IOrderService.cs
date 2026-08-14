@@ -16,12 +16,14 @@ namespace Services.Interface
         Task<List<OrderDetailsGridDE>> GetGridOrder(OrderSearchDE orderSearchDE);
         Task<List<OrderViewInfoDE>> GetOrderView(int OrderID);
         Task<List<OrderPrintReportDE>> GetOrderPrint(int OrderID);
+        Task<List<DesignerPrintDE>> GetDesginerPrint(int OrderID);
         Task<List<EmployeeDE>> GetOperator(int OrderID);
         Task<List<OrderDesignInfoDE>> GetPendingDesingOrder();
         Task<List<OrderDesignInfoDE>> GetDesingOrder(int DesignerID);
+        Task<List<OrderDesignInfoDE>> GetDesingerOrderReport(int DesignerID);
         Task<List<OrderReworkInfoDE>> GetReworkOrder();
         Task<List<OrderDesignUploadInfoDE>> GetDesignUploadOrder();
-        Task<List<OrderPendingConfirmationInfoDE>> GetPendingOrderConfirmation();
+        Task<List<OrderPendingConfirmationInfoDE>> GetPendingOrderConfirmation(int? customerID);
         Task<List<OrderConfirmedInfo>> GetConfirmedOrder();
         Task<List<OrderUnderProductionInfoDE>> GetUnderProductionOrder();
         Task<ResponseDE> AMDAssignDesigner(OrderDesignRequestDE requestDE);

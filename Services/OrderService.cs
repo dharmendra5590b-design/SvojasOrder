@@ -198,11 +198,16 @@ namespace Services
         {
             try
             {
-                DataTable dataTable = await _orderRepo.GetOrderView(OrderID);
+                DataSet dataSet = await _orderRepo.GetOrderView(OrderID);
                 List<OrderViewInfoDE> orders = new List<OrderViewInfoDE>();
 
-                foreach (DataRow row in dataTable.Rows)
+                foreach (DataRow row in dataSet.Tables[0].Rows)
                 {
+                    List<string> specificationList = dataSet.Tables[1]
+                        .AsEnumerable()
+                        .Select(x => x["Rework_Specification"]?.ToString())
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
+                        .ToList();
                     orders.Add(new OrderViewInfoDE
                     {
                         Order_ID = Convert.ToInt32(row["Order_ID"]),
@@ -278,7 +283,8 @@ namespace Services
                         Other_Charges = row["Other_Charges"] == DBNull.Value ? null : Convert.ToString(row["Other_Charges"]),
 
                         Order_Status = row["Current_Order_Status"] == DBNull.Value ? null : Convert.ToString(row["Current_Order_Status"]),
-                        adminSpecification = row["Current_Order_Status"] == DBNull.Value ? null : Convert.ToString(row["Admin_Specification"])
+                        adminSpecification = row["Current_Order_Status"] == DBNull.Value ? null : Convert.ToString(row["Admin_Specification"]),
+                        ReworkSpecificationList=specificationList
                     });
 
                 };
@@ -354,6 +360,57 @@ namespace Services
             }
         }
 
+        public async Task<List<DesignerPrintDE>> GetDesginerPrint(int OrderID)
+        {
+            try
+            {
+                DataSet dataSet = await _orderRepo.GetDesginerPrint(OrderID);
+                List<DesignerPrintDE> orders = new List<DesignerPrintDE>();
+
+                foreach (DataRow dr in dataSet.Tables[0].Rows)
+                {
+                   
+                    List<string> specificationList = dataSet.Tables[1]
+                        .AsEnumerable()
+                        .Select(x => x["Specification"]?.ToString())
+                        .Where(x => !string.IsNullOrWhiteSpace(x))
+                        .ToList();
+
+
+                    orders.Add(new DesignerPrintDE
+                    {
+
+                        Order_Number = dr["Order_Number"]?.ToString(),
+                        Order_DT = dr["Order_DT"]?.ToString(),
+                        Design = dr["Design"]?.ToString(),
+                        Quantity = dr["Quantity"]?.ToString(),
+                        Karat = dr["Karat"]?.ToString(),
+                        Design_Type = dr["Design_Type"]?.ToString(),
+                        Gold_Colour = dr["Gold_Colour"]?.ToString(),
+                        Size = dr["Size"]?.ToString(),
+                        Weight = dr["Weight"]?.ToString(),
+                        Stone_Name = dr["Stone_Name"]?.ToString(),
+                        Diamond_Weight = dr["Diamond_Weight"]?.ToString(),
+                        NoOf_Diamonds = dr["NoOf_Diamonds"]?.ToString(),
+                        Colour_Stone_Name = dr["Colour_Stone_Name"]?.ToString(),
+                        NoOf_CLR_Stone = dr["NoOf_CLR_Stone"]?.ToString(),
+                        CLR_Stone_Weight = dr["CLR_Stone_Weight"]?.ToString(),
+                        Expected_DT = dr["Expected_DT"]?.ToString(),
+                        Priority = dr["Priority"]?.ToString(),
+                        CAD_Image_URL = dr["CAD_Image_URL"]?.ToString(),
+                        SpecificationList= specificationList
+                    });
+
+                }
+                return orders;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<List<OrderDesignInfoDE>> GetPendingDesingOrder()
         {
             try
@@ -412,6 +469,56 @@ namespace Services
                         Is_High_Priority = row["Is_High_Priority"] == DBNull.Value ? null : Convert.ToBoolean(row["Is_High_Priority"]),
                         Design_Expected_DT = row["Design_Expected_DT"] as DateTime?
 
+                    });
+                }
+                return orders;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<List<OrderDesignInfoDE>> GetDesingerOrderReport(int DesignerID)
+        {
+            try
+            {
+
+                DataTable dataTable = await _orderRepo.GetDesingerOrderReport(DesignerID);
+                List<OrderDesignInfoDE> orders = new List<OrderDesignInfoDE>();
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    orders.Add(new OrderDesignInfoDE
+                    {
+                        Order_ID = Convert.ToInt32(row["Order_ID"]),
+                        Order_Number = Convert.ToString(row["Order_Number"]),
+
+                        Order_Date = (row["Order_Date"] == DBNull.Value|| row["Order_Date"] == null)
+        ? (DateTime?)null
+        : Convert.ToDateTime(row["Order_Date"]),
+
+                        Design = Convert.ToString(row["Design"]),
+
+                        DesignID = row["Design_ID"] == DBNull.Value
+        ? 0
+        : Convert.ToInt32(row["Design_ID"]),
+
+                        Designer_Assgined_DT = (row["Assgined_Date"] == DBNull.Value || row["Assgined_Date"] == null)
+        ? (DateTime?)null
+        : Convert.ToDateTime(row["Assgined_Date"]),
+
+                        Is_High_Priority = row["Priority"] != DBNull.Value &&
+                       Convert.ToString(row["Priority"]) == "High",
+
+                        Design_Expected_DT = (row["Expected_Date"] == DBNull.Value || row["Expected_Date"] == null)
+        ? (DateTime?)null
+        : Convert.ToDateTime(row["Expected_Date"]),
+
+                        CaD_Uploaded_DT = (row["Design_Upload_DT"] == DBNull.Value || row["Design_Upload_DT"] == null)
+        ? (DateTime?)null
+        : Convert.ToDateTime(row["Design_Upload_DT"])
                     });
                 }
                 return orders;
@@ -521,12 +628,12 @@ namespace Services
             }
         }
 
-        public async Task<List<OrderPendingConfirmationInfoDE>> GetPendingOrderConfirmation()
+        public async Task<List<OrderPendingConfirmationInfoDE>> GetPendingOrderConfirmation(int? customerID)
         {
             try
             {
 
-                DataTable dataTable = await _orderRepo.GetPendingOrderConfirmation();
+                DataTable dataTable = await _orderRepo.GetPendingOrderConfirmation(customerID);
                 List<OrderPendingConfirmationInfoDE> orders = new List<OrderPendingConfirmationInfoDE>();
 
                 foreach (DataRow row in dataTable.Rows)
