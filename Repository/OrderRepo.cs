@@ -874,9 +874,9 @@ namespace Repository
                 throw;
             }
         }
-        public async Task<DataTable> GetOrder(OrderSearchDE orderSearchDE)
+        public async Task<DataSet> GetOrder(OrderSearchDE orderSearchDE)
         {
-           DataTable dataTable=new DataTable();
+            DataSet dataSet =new DataSet();
 
             try
             {
@@ -923,14 +923,14 @@ namespace Repository
  };
 
 
-                dataTable =      await _sqlConnection.FunDataTable(
+                dataSet = await _sqlConnection.FunDataSet(
                     "usp_GET_Order_For_Customer",
                     CommandType.StoredProcedure,
                     objSqlParameter
                 );
 
                 
-                return dataTable;
+                return dataSet;
             }
             catch (Exception)
             {
@@ -938,7 +938,7 @@ namespace Repository
             }
         }
 
-        public async Task<DataSet> GetOrderView(int OrderID)
+        public async Task<DataSet> GetOrderView(int OrderID, int? UserID)
         {
             DataSet dataSet = new DataSet();
 
@@ -949,6 +949,10 @@ namespace Repository
     new SqlParameter("@Order_ID", SqlDbType.Int)
     {
         Value = OrderID
+    },
+    new SqlParameter("@User_ID", SqlDbType.Int)
+    {
+        Value = UserID
     }
  };
 

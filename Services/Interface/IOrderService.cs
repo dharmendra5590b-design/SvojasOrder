@@ -14,7 +14,7 @@ namespace Services.Interface
         Task<ResponseDE> AMDCancelOrder(OrderCancelRequestDE orderCancelRequestDE);
         Task<List<OrderDetailDE>> GetOrderDetail(OrderSearchDE orderSearchDE);
         Task<List<OrderDetailsGridDE>> GetGridOrder(OrderSearchDE orderSearchDE);
-        Task<List<OrderViewInfoDE>> GetOrderView(int OrderID);
+        Task<List<OrderViewInfoDE>> GetOrderView(int OrderID, int? UserID);
         Task<List<OrderPrintReportDE>> GetOrderPrint(int OrderID);
         Task<List<DesignerPrintDE>> GetDesginerPrint(int OrderID);
         Task<List<EmployeeDE>> GetOperator(int OrderID);

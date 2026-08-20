@@ -56,10 +56,10 @@ namespace Services
             try
             {
                 orderSearchDE.mode = "S";
-                DataTable dataTable = await _orderRepo.GetOrder(orderSearchDE);
+                DataSet dataSet = await _orderRepo.GetOrder(orderSearchDE);
                 List<OrderDetailsGridDE> orders = new List<OrderDetailsGridDE>();
 
-                foreach (DataRow dr in dataTable.Rows)
+                foreach (DataRow dr in dataSet.Tables[0].Rows)
                 {
                     orders.Add(new OrderDetailsGridDE
                     {
@@ -103,11 +103,20 @@ namespace Services
             try
             {
                 orderSearchDE.mode = orderSearchDE.mode=="C"? orderSearchDE.mode: "S";
-                DataTable dataTable = await _orderRepo.GetOrder(orderSearchDE);
+                DataSet dataSet = await _orderRepo.GetOrder(orderSearchDE);
                 List<OrderDetailDE> orders = new List<OrderDetailDE>();
 
-                foreach (DataRow dr in dataTable.Rows)
+                foreach (DataRow dr in dataSet.Tables[0].Rows)
                 {
+                    List<string> specificationList = new List<string>();
+                    if (orderSearchDE.mode == "C")
+                    {
+                        specificationList = dataSet.Tables[1]
+                           .AsEnumerable()
+                           .Select(x => x["Rework_Specification"]?.ToString())
+                           .Where(x => !string.IsNullOrWhiteSpace(x))
+                           .ToList();
+                    }
                     orders.Add(new OrderDetailDE
                     {
                         Order_ID = dr.GetNullableInt("Order_ID") ?? 0,
@@ -181,7 +190,7 @@ namespace Services
                         Certificate_Charge = dr.GetNullableDecimal("Certificate_Charge"),
                         Other_Charges = dr.GetNullableDecimal("Other_Charges"),
                         Final_Net_Weight_24kt = dr.GetNullableDecimal("Final_Net_Weight_24kt"),
-
+                        ReworkSpecificationList=specificationList
 
                     });
                 }
@@ -194,11 +203,11 @@ namespace Services
             }
         }
 
-        public async Task<List<OrderViewInfoDE>> GetOrderView(int OrderID)
+        public async Task<List<OrderViewInfoDE>> GetOrderView(int OrderID, int? UserID)
         {
             try
             {
-                DataSet dataSet = await _orderRepo.GetOrderView(OrderID);
+                DataSet dataSet = await _orderRepo.GetOrderView(OrderID, UserID);
                 List<OrderViewInfoDE> orders = new List<OrderViewInfoDE>();
 
                 foreach (DataRow row in dataSet.Tables[0].Rows)

@@ -151,12 +151,12 @@ namespace SvojasOrder.Controllers
         }
 
         [HttpGet]
-        public async Task<List<OrderViewInfoDE>> GetOrderView(int OrderID)
+        public async Task<List<OrderViewInfoDE>> GetOrderView(int OrderID, int? UserID)
         {
             List<OrderViewInfoDE> dataObj = new List<OrderViewInfoDE>();
             try
             {
-                dataObj = await _orderService.GetOrderView(OrderID);
+                dataObj = await _orderService.GetOrderView(OrderID, UserID);
                 return dataObj;
             }
             catch (Exception ex)
@@ -452,7 +452,7 @@ namespace SvojasOrder.Controllers
                     Order_ID = requestDE.Order_ID,
                     User_ID = requestDE.User_ID,
                     Specification = requestDE.Specification,
-                    Rework_Image_URL = await SaveFile(requestDE.CADImage)
+                    Rework_Image_URL = requestDE.CADImage==null?null: await SaveFile(requestDE.CADImage)
                 };
                 responseDE = await _orderService.OrderReworkDtl(OrderRequest);
 

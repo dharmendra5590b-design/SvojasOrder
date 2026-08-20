@@ -77,5 +77,6 @@ namespace Domain
         public decimal? Final_Net_Weight_24kt { get; set; }
         public decimal? Certificate_Charge { get; set; }
         public decimal? Other_Charges { get; set; }
+        public List<string> ReworkSpecificationList { get; set; }
     }
 }
