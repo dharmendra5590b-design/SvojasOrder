@@ -16,6 +16,7 @@ namespace Domain
         public string Design { get; set; }
         public string? Quantity { get; set; }
         public DateTime? Delivery_Date { get; set; }
+        public DateTime? Committed_DT { get; set; }
         public string Designer_Name { get; set; }
         public DateTime? Designer_Assgined_DT { get; set; }
         public bool? Is_High_Priority { get; set; }

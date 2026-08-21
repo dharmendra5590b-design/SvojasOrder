@@ -12,6 +12,7 @@ namespace Domain
         public int Order_ID { get; set; }
         public string Order_Number { get; set; }
         public string Order_Date { get; set; }
+        public string Order_Type { get; set; }
 
         public string Design { get; set; }
         public string? Quantity { get; set; }

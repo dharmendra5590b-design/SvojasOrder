@@ -222,6 +222,7 @@ namespace Services
                         Order_ID = Convert.ToInt32(row["Order_ID"]),
                         Order_Number = Convert.ToString(row["Order_Number"]),
                         Order_Date = Convert.ToString(row["Order_Date"]),
+                        Order_Type = Convert.ToString(row["Order_Type"]),
 
                         Design = Convert.ToString(row["Design"]),
                         Quantity = row["Quantity"] == DBNull.Value ? null : Convert.ToString(row["Quantity"]),
@@ -697,6 +698,7 @@ namespace Services
                         Design = Convert.ToString(row["Design"]),
                         Quantity = row["Quantity"] == DBNull.Value ? null : Convert.ToString(row["Quantity"]),
                         Delivery_Date = row["Delivery_Date"] == DBNull.Value ? null : Convert.ToDateTime(row["Delivery_Date"]),
+                        Committed_DT = row["Committed_DT"] == DBNull.Value ? null : Convert.ToDateTime(row["Committed_DT"]),
                         Designer_Name = Convert.ToString(row["Designer_Name"]),
                         Designer_Assgined_DT = row["Designer_Assgined_DT"] == DBNull.Value ? null : Convert.ToDateTime(row["Designer_Assgined_DT"]),
                         Is_High_Priority = row["Is_High_Priority"] == DBNull.Value ? null : Convert.ToBoolean(row["Is_High_Priority"]),
@@ -739,6 +741,7 @@ namespace Services
                         Design = Convert.ToString(row["Design"]),
                         Quantity = row["Quantity"] == DBNull.Value ? null : Convert.ToString(row["Quantity"]),
                         Delivery_Date = row["Delivery_Date"] == DBNull.Value ? null : Convert.ToDateTime(row["Delivery_Date"]),
+                        Committed_DT = row["Committed_DT"] == DBNull.Value ? null : Convert.ToDateTime(row["Committed_DT"]),
                         Designer_Name = Convert.ToString(row["Designer_Name"]),
                         Designer_Assgined_DT = row["Designer_Assgined_DT"] == DBNull.Value ? null : Convert.ToDateTime(row["Designer_Assgined_DT"]),
                         Is_High_Priority = row["Is_High_Priority"] == DBNull.Value ? null : Convert.ToBoolean(row["Is_High_Priority"]),
